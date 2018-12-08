@@ -65,6 +65,7 @@ extern string input_file_name;
  */
 int main(int argc, char* argv[]) 
 {
+	cout << "ZERO:\t adding comments to learn the flow of HyLaGI" << endl;
 	cout << "ONE:\t beginning of HyLaGI program" << endl;
 	// 
 	// #ifdef _MSC_VER
@@ -72,7 +73,7 @@ int main(int argc, char* argv[])
 	// #endif
 
 	cout << "TWO:\t calling hydla_main()" << endl;
-	return hydla_main(argc, argv);
+	// return hydla_main(argc, argv);
 }
 
 int hydla_main(int argc, char* argv[])
