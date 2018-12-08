@@ -74,11 +74,13 @@ int hydla_main(int argc, char* argv[])
 	signal(SIGINT, signal_handler::interrupt_handler);
 	signal(SIGTERM, signal_handler::term_handler);
 
+	// コマンドラインオプションが help か version だった場合はここで終了する。
 	if (dump_in_advance(cmdline_options)) {
-		cout << "=> 4:\t terminating before simulation" << endl;
+		cout << "=> last-1:\t terminating before simulation (help/ver)" << endl;
 		return 0;
 	}
 	
+	// 前処理の時間 + シミュレーションの時間
 	Timer main_timer;
 
 	// ParseTreeの構築
@@ -467,12 +469,19 @@ int hydla_main(int argc, char* argv[])
 		return 0;
 	}
 	
-	if(dump(pt, cmdline_options) || dump(pt, options_in_source)) {
+	// コマンドラインで「何かをdumpして終了する」ようなオプションが指定されていたら、
+	// シミュレーションの実行前に、ここでプログラムをterminateする。
+	if (dump(pt, cmdline_options) || dump(pt, options_in_source)) {
+		cout << "=> last-1:\t terminating before simulation (dump)" << endl;
 		return 0;
 	}
 
+	// ==================== ここからがシミュレーション ====================
+	// 前処理がかなり大きいことがわかる。（シミュレーションも外部ファイル上でかなり大きいけれど。）
+
+	// シミュレーションの時間を計測
 	Timer simulation_timer;
-	// シミュレーション開始
+	// HydLaモデルのシミュレーションを実行する
 	int simulation_result = simulate(pt);
 
 	HYDLA_LOGGER_STANDARD("Simulation Time : ", simulation_timer.get_time_string());
@@ -530,6 +539,6 @@ bool dump_in_advance(ProgramOptions& po)
 		cout << Version::description() << endl;
 		return true;
 	}
-	// その他の以上終了
+	// helpとversion以外のオプションであれば、if文で終了せずに続行
 	return false;
 }
