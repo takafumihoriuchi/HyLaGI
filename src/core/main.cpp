@@ -4,10 +4,6 @@
 #include <fstream>
 #include <regex>
 
-// #ifdef _MSC_VER
-// #include <windows.h>
-// #endif
-
 // core
 #include "version.h"
 #include "ProgramOptions.h"
@@ -65,21 +61,16 @@ extern string input_file_name;
  */
 int main(int argc, char* argv[]) 
 {
-	cout << "ZERO:\t adding comments to learn the flow of HyLaGI" << endl;
 	cout << "ONE:\t beginning of HyLaGI program" << endl;
-	// 
-	// #ifdef _MSC_VER
-	//   _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	// #endif
-
-	cout << "TWO:\t calling hydla_main()" << endl;
 	return hydla_main(argc, argv);
+	cout << "LAST:\t terminating HyLaGI" << endl;
 }
 
 int hydla_main(int argc, char* argv[])
 {
-	cout << "THREE:\t entered hydla_main()" << endl;
+	cout << "TWO:\t entered hydla_main()" << endl;
 	cmdline_options.parse(argc, argv);
+	cout << "THREE:\t finished parsing command line option" << endl;
 	
 	signal(SIGINT, signal_handler::interrupt_handler);
 	signal(SIGTERM, signal_handler::term_handler);
