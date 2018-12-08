@@ -62,8 +62,9 @@ extern string input_file_name;
 int main(int argc, char* argv[]) 
 {
 	cout << "ONE:\t beginning of HyLaGI program" << endl;
-	return hydla_main(argc, argv);
+	int result = hydla_main(argc, argv);
 	cout << "LAST:\t terminating HyLaGI" << endl;
+	return result;
 }
 
 int hydla_main(int argc, char* argv[])
