@@ -162,7 +162,7 @@ void ProgramOptions::init_descriptions()
 void ProgramOptions::parse(int argc, char* argv[])
 {
 	#include <iostream>
-	cout << "=> 3.1:\t in side parsing function" << endl;
+	std::cout << "=> 3.1:\t in side parsing function" << std::endl;
 	positional_options_description positional_opt;
 	positional_opt.add("input-file", -1);
 
