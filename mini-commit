@@ -1,0 +1,9 @@
+#!/bin/bash
+echo "> git status"
+git status
+echo "> git add -A"
+git add -A
+echo "> git commit -m \"auto commit from mini-commit\""
+git commit -m "auto commit from mini-commit"
+echo "> git push"
+git push

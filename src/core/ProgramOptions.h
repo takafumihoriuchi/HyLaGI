@@ -5,7 +5,7 @@
 
 namespace hydla {
 
-/* 実行時に指定するオプションを処理＆保持するクラス */
+// 実行時に指定するオプションを処理＆保持するクラス
 // ここでクラスの宣言をして、中身の記述は ProgramOptions.cpp にある。
 class ProgramOptions {
 public:
@@ -20,17 +20,14 @@ public:
 	void parse(std::string str);
 
 	template<typename T>
-	T get(const char name[]) const 
-		{
-			return vm_[name].as<T>();
-		}
+	T get(const char name[]) const { return vm_[name].as<T>(); }
 
 	// 与えられた名前のオプションが実行時に指定された数を返す
-	int count(const char name[]) const {return vm_.count(name);}
+	int count(const char name[]) const { return vm_.count(name); }
 	// 
-	bool defaulted(const char name[]) const{return vm_.count(name) > 0 && vm_[name].defaulted();}
+	bool defaulted(const char name[]) const { return vm_.count(name) > 0 && vm_[name].defaulted(); }
 	// 
-	void help_msg(std::ostream& os) const {visible_desc_.print(os);}
+	void help_msg(std::ostream& os) const { visible_desc_.print(os); }
 	// 
 	void init_descriptions();
 
