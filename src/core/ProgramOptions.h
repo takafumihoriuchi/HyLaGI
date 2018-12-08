@@ -1,3 +1,4 @@
+// 同じヘッダファイルを複数回読み込むことを防止する宣言
 #pragma once
 
 #include <boost/program_options.hpp>
