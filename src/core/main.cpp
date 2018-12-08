@@ -27,7 +27,6 @@
 // debug
 #include "debug_main.h"
 
-
 // namespace
 using namespace boost;
 using namespace hydla;
@@ -56,10 +55,8 @@ extern simulator::SequentialSimulator* simulator_;
 extern Opts opts;
 extern string input_file_name;
 
-/**
- * エントリポイント
- */
-int main(int argc, char* argv[]) 
+// エントリポイント
+int main(int argc, char* argv[])
 {
 	cout << "ONE:\t beginning of HyLaGI program" << endl;
 	int result = hydla_main(argc, argv);
@@ -100,7 +97,7 @@ int hydla_main(int argc, char* argv[])
 									 std::istreambuf_iterator<char>());
 	}
 
-	//バックスラッシュ直後の改行の除去
+	// バックスラッシュ直後の改行の除去
 	{
 		const std::regex r("([^/]\\\\[ \t]*(\n|\r\n))");
 		input = std::regex_replace(input, r, " ");
@@ -125,7 +122,7 @@ int hydla_main(int argc, char* argv[])
 
 	Logger::set_html_mode(opts.html);
 
-	//マクロ処理
+	// マクロ処理
 	{
 		static const bool debugPrint = false;
 
@@ -152,7 +149,7 @@ int hydla_main(int argc, char* argv[])
 					for (string::size_type pos = input.find(m_name, offset); pos != string::npos; pos = input.find(m_name, pos))
 					{
 						{
-							//識別子の前後が英数字だったら読み飛ばす
+							// 識別子の前後が英数字だったら読み飛ばす
 							if (0 < pos && isAlNum(input[pos - 1]))
 							{
 								pos += m_name.length();
@@ -178,11 +175,11 @@ int hydla_main(int argc, char* argv[])
 				}
 				else
 				{
-					//左括弧と右括弧が同じ数になるように対応づけなければならないので正規表現は使えない
+					// 左括弧と右括弧が同じ数になるように対応づけなければならないので正規表現は使えない
 					for (string::size_type pos = input.find(m_name, offset); pos != string::npos; pos = input.find(m_name, pos))
 					{
 						{
-							//識別子の前後が英数字だったら読み飛ばす
+							// 識別子の前後が英数字だったら読み飛ばす
 							if (0 < pos && isAlNum(input[pos - 1]))
 							{
 								pos += m_name.length();
@@ -325,7 +322,7 @@ int hydla_main(int argc, char* argv[])
 					for (string::size_type pos = result.find(m_argments[i]); pos != string::npos; pos = result.find(m_argments[i], pos))
 					{
 						{
-							//識別子の前後が英数字だったら読み飛ばす
+							// 識別子の前後が英数字だったら読み飛ばす
 							if (0 < pos && isAlNum(result[pos - 1]))
 							{
 								pos += m_argments[i].length();
@@ -440,20 +437,6 @@ int hydla_main(int argc, char* argv[])
 
 		add_vars_from_string(var_string, opts.output_vars, string("[") + (isOmit ? "#omit" : "#output") + "]");
 	}
-
-	// {
-	//   Logger::instance().set_log_level(Logger::Debug);
-	//   parser::Parser p(input);
-	//   node_sptr expr = p.arithmetic();
-	//   interval::parameter_idx_map_t map;
-	//   simulator::variable_map_t vm;
-	//   interval::AffineTreeVisitor visitor(map, vm);
-	//   interval::AffineMixedValue affine = visitor.approximate(expr);
-	//   cout << affine << endl;
-	//   cout << affine.to_interval() << endl;
-	//   cout << affine.to_affine() << endl;
-	//   return 0;
-	// }
 	
 	process_opts(opts, cmdline_options, false);
 
@@ -495,10 +478,7 @@ int hydla_main(int argc, char* argv[])
 	return simulation_result;
 }
 
-/**
- * ProgramOptionとParseTreeを元に出力
- * 何か出力したらtrueを返す
- */
+// ProgramOptionとParseTreeを元に出力、何か出力したらtrueを返す
 bool dump(boost::shared_ptr<ParseTree> pt, ProgramOptions& po)
 {
 
@@ -513,8 +493,6 @@ bool dump(boost::shared_ptr<ParseTree> pt, ProgramOptions& po)
 	}
 
 	if(po.count("debug_constraint")>0) {
-		//dump_debug(cout);
-		//cout << "hoge";
 		return true;
 	}
 
@@ -538,12 +516,14 @@ bool dump(boost::shared_ptr<ParseTree> pt, ProgramOptions& po)
 
 bool dump_in_advance(ProgramOptions& po)
 {
-	if(po.count("help")) {     // ヘルプ表示して終了
+	// ヘルプ表示して終了
+	if(po.count("help")) {
 		po.help_msg(cout);
 		return true;
 	}
 
-	if(po.count("version")) {  // バージョン表示して終了
+	// バージョン表示して終了
+	if(po.count("version")) {
 		cout << Version::description() << endl;
 		return true;
 	}
