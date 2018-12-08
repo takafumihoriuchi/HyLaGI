@@ -419,7 +419,8 @@ int Backend::call(const char* name, bool trace, int arg_cnt, const char* args_fm
     throw;
   }
   HYDLA_LOGGER_DEBUG(name);
-  hydla::logger::Logger::debug_write_timer(call_timer);
+  // これがあると、timer elapsed: 616[us] のようなものがズラーっと出力される。
+  // hydla::logger::Logger::debug_write_timer(call_timer);
   return 0;
 }
 
