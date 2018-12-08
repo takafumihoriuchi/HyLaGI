@@ -65,12 +65,13 @@ extern string input_file_name;
  */
 int main(int argc, char* argv[]) 
 {
-	cout << "ONE:\t beginning of HyLaGI program";
+	cout << "ONE:\t beginning of HyLaGI program" << endl;
 	// 
 	// #ifdef _MSC_VER
 	//   _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	// #endif
 
+	cout << "TWO:\t calling hydla_main()" << endl;
 	return hydla_main(argc, argv);
 }
 
