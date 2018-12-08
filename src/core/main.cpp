@@ -78,6 +78,7 @@ int main(int argc, char* argv[])
 
 int hydla_main(int argc, char* argv[])
 {
+	cout << "THREE:\t entered hydla_main()" << endl;
 	cmdline_options.parse(argc, argv);
 	
 	signal(SIGINT, signal_handler::interrupt_handler);
