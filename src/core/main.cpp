@@ -58,17 +58,18 @@ extern string input_file_name;
 // エントリポイント
 int main(int argc, char* argv[])
 {
-	cout << "ONE:\t beginning of HyLaGI program" << endl;
+	cout << "=> 1:\t beginning of HyLaGI program" << endl;
 	int result = hydla_main(argc, argv);
-	cout << "LAST:\t terminating HyLaGI" << endl;
+	cout << "=> last:\t terminating HyLaGI" << endl;
 	return result;
 }
 
 int hydla_main(int argc, char* argv[])
 {
-	cout << "TWO:\t entered hydla_main()" << endl;
+	cout << "=> 2:\t entered hydla_main()" << endl;
+	cout << "=> 3:\t calling function to parse command line options" << endl;
 	cmdline_options.parse(argc, argv);
-	cout << "THREE:\t finished parsing command line option" << endl;
+	cout << "=> 3.2:\t finished parsing command line option" << endl;
 	
 	signal(SIGINT, signal_handler::interrupt_handler);
 	signal(SIGTERM, signal_handler::term_handler);
