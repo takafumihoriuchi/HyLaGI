@@ -74,7 +74,10 @@ int hydla_main(int argc, char* argv[])
 	signal(SIGINT, signal_handler::interrupt_handler);
 	signal(SIGTERM, signal_handler::term_handler);
 
-	if(dump_in_advance(cmdline_options))return 0;
+	if (dump_in_advance(cmdline_options)) {
+		cout << "=> 4:\t terminating before simulation" << endl;
+		return 0;
+	}
 	
 	Timer main_timer;
 
@@ -518,16 +521,15 @@ bool dump(boost::shared_ptr<ParseTree> pt, ProgramOptions& po)
 bool dump_in_advance(ProgramOptions& po)
 {
 	// ヘルプ表示して終了
-	if(po.count("help")) {
+	if (po.count("help")) {
 		po.help_msg(cout);
 		return true;
 	}
-
 	// バージョン表示して終了
-	if(po.count("version")) {
+	if (po.count("version")) {
 		cout << Version::description() << endl;
 		return true;
 	}
-
+	// その他の以上終了
 	return false;
 }

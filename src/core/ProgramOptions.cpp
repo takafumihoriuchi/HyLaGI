@@ -166,9 +166,8 @@ void ProgramOptions::parse(int argc, char* argv[])
 	positional_options_description positional_opt;
 	positional_opt.add("input-file", -1);
 
-	store(command_line_parser(argc, argv).
-				options(cmdline_desc_).
-				positional(positional_opt).extra_parser(reg_toggle).run(), vm_);
+	store(command_line_parser(argc, argv).options(cmdline_desc_).
+		positional(positional_opt).extra_parser(reg_toggle).run(), vm_);
 	notify(vm_);
 }
 
