@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 	// #endif
 
 	cout << "TWO:\t calling hydla_main()" << endl;
-	// return hydla_main(argc, argv);
+	return hydla_main(argc, argv);
 }
 
 int hydla_main(int argc, char* argv[])
