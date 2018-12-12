@@ -476,7 +476,7 @@ int hydla_main(int argc, char* argv[])
 		return 0;
 	}
 
-	// ==================== ここからがシミュレーション ====================
+	// ========================= ここからがシミュレーション =========================
 	// 前処理がかなり大きいことがわかる。（シミュレーションも外部ファイル上でかなり大きいけれど。）
 
 	// シミュレーションの時間を計測
@@ -492,37 +492,32 @@ int hydla_main(int argc, char* argv[])
 }
 
 // ProgramOptionとParseTreeを元に出力、何か出力したらtrueを返す
+// 該当するオプションが指定されていない場合は、falseを返してプログラムを続行する
 bool dump(boost::shared_ptr<ParseTree> pt, ProgramOptions& po)
 {
-
-	if(po.count("dump_parse_tree")>0) {
+	if (po.count("dump_parse_tree") > 0) {
 		pt->to_graphviz(cout);
 		return true;
 	}
-
-	if(po.count("dump_parse_tree_json")>0) {
+	if (po.count("dump_parse_tree_json") > 0) {
 		pt->dump_in_json(cout);
 		return true;
 	}
-
-	if(po.count("debug_constraint")>0) {
+	if (po.count("debug_constraint") > 0) {
 		return true;
 	}
-
-	if(po.count("dump_module_set_graph")>0) {
+	if (po.count("dump_module_set_graph") > 0) {
 		ModuleSetContainerCreator<IncrementalModuleSet> mcc;
 		boost::shared_ptr<IncrementalModuleSet> msc(mcc.create(pt));
 		msc->dump_module_sets_for_graphviz(cout);
 		return true;
 	}
-
-	if(po.count("dump_module_priority_graph")>0) {
+	if (po.count("dump_module_priority_graph") > 0) {
 		ModuleSetContainerCreator<IncrementalModuleSet> mcc;
 		boost::shared_ptr<IncrementalModuleSet> msc(mcc.create(pt));
 		msc->dump_priority_data_for_graphviz(cout);
 		return true;
 	}
-
 	return false;
 }
 
