@@ -248,6 +248,7 @@ int simulate(boost::shared_ptr<hydla::parse_tree::ParseTree> parse_tree)
 	simulator_->set_backend(backend_);
 	simulator_->set_phase_simulator(new PhaseSimulator(simulator_, opts));
 	simulator_->initialize(parse_tree);
+	std::cout << "=> 4.2:\t starting simulation" << std::endl;
 	simulator_->simulate();
 	if(!opts.ha_convert_mode)
 	{
