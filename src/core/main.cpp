@@ -482,6 +482,7 @@ int hydla_main(int argc, char* argv[])
 	// シミュレーションの時間を計測
 	Timer simulation_timer;
 	// HydLaモデルのシミュレーションを実行する
+	// 'pt' は "parse-tree" の略
 	int simulation_result = simulate(pt);
 
 	HYDLA_LOGGER_STANDARD("Simulation Time : ", simulation_timer.get_time_string());
