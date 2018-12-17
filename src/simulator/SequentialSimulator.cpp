@@ -21,7 +21,7 @@ SequentialSimulator::~SequentialSimulator()
 
 phase_result_sptr_t SequentialSimulator::simulate()
 {
-  std::cout << "IN SEQUENTIAL SIMULATOR" << std::endl;
+  std::cout << "=> 5:\t IN SEQUENTIAL SIMULATOR" << std::endl;
 
   std::string error_str = "";
   make_initial_todo();
