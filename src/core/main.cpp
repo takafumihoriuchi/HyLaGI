@@ -489,8 +489,7 @@ int hydla_main(int argc, char* argv[])
 	HYDLA_LOGGER_STANDARD("Finish Time : ", main_timer.get_time_string());
 	HYDLA_LOGGER_STANDARD("");
 
-	cout << "=> last-2:\t returning from hydla_main" << endl;
-	cout << "=> " << simulation_result << endl;
+	cout << "=> return " << simulation_result << " from hydla_main" << endl;
 	return simulation_result;
 }
 
