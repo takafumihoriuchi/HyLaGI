@@ -490,6 +490,7 @@ int hydla_main(int argc, char* argv[])
 	HYDLA_LOGGER_STANDARD("");
 
 	cout << "=> last-2:\t returning from hydla_main" << endl;
+	cout << "=> simulation_result" << endl;
 	return simulation_result;
 }
 
