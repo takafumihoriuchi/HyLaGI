@@ -68,8 +68,8 @@ void output_result(Simulator& ss, Opts& opts){
 		sstr << "---------parameter condition(global)---------" << endl;
 		Printer.output_parameter_map(par_map);
 	}
-	std::cout << "=> 4.4.2:\t before print" << std::endl;
 	Printer.output_result_tree(ss.get_result_root());
+	std::cout << "=> 4.4.2:\t before print" << std::endl;
 	HYDLA_LOGGER_STANDARD(sstr.str());
 	std::cout << "=> 4.4.3:\t after print" << std::endl;
 
