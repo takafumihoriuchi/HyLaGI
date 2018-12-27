@@ -54,6 +54,7 @@ static string get_file_without_ext(const string &path)
 }
 
 void output_result(Simulator& ss, Opts& opts){
+	std::cout << "=> 4.4.1:\t in the function to output result" << std::endl;
 	auto detail = logger::Detail(__FUNCTION__);
 
 	std::stringstream sstr;
@@ -139,7 +140,7 @@ void output_result(Simulator& ss, Opts& opts){
 
 void trim_front_and_behind_space(std::string &buffer)
 {
-			// 前後の空白を取り除く
+	// 前後の空白を取り除く
 	auto left = buffer.find_first_not_of(" ");
 	if (left != string::npos)
 	{
@@ -245,13 +246,18 @@ int simulate(boost::shared_ptr<hydla::parse_tree::ParseTree> parse_tree)
 	std::cout << "=> 4.1.3:\t initializing simulator" << std::endl;
 	simulator_->initialize(parse_tree);
 	std::cout << "=> 4.2:\t starting simulation" << std::endl;
+
+	// ここがHydLaシミュレーションの要！！
 	simulator_->simulate();
-	std::cout << "=> 4.3:\t function simulate() of sumulator_ terminated and proceeding to the next step" << std::endl;
+
+	std::cout << "=> 4.3:\t simulation terminated" << std::endl;
+	// 
 	if(!opts.ha_convert_mode)
 	{
 		std::cout << "=> 4.4:\t option ha_convert_mode is set to false" << std::endl;
 		output_result(*simulator_, opts);
 	}
+	std::cout << "=> 4.5:\t outputted result" << std::endl;
 	int simulation_status = simulator_->get_exit_status();
 	delete simulator_;
 	return simulation_status;
