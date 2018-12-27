@@ -58,7 +58,7 @@ void output_result(Simulator& ss, Opts& opts){
 	auto detail = logger::Detail(__FUNCTION__);
 
 	std::stringstream sstr;
-	sstr << "------ Result of Simulation ------\n";
+	sstr << "\n------ Result of Simulation ------\n";
 	hydla::io::SymbolicTrajPrinter Printer(backend_, sstr, opts.interval);
 	if(opts.epsilon_mode >= 0){Printer.set_epsilon_mode(backend_,true);}
 
