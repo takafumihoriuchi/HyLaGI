@@ -242,6 +242,7 @@ int simulate(boost::shared_ptr<hydla::parse_tree::ParseTree> parse_tree)
 		simulator_ = new HybridAutomatonConverter(opts);
 	} else {
 		std::cout << "=> 4.1:\t creating new instance of SequentialSimulator" << std::endl;
+		std::cout << "=> 4.1:\t this is a test" << std::endl;
 		simulator_ = new SequentialSimulator(opts);
 	}
 
