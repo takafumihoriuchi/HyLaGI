@@ -70,8 +70,8 @@ void output_result(Simulator& ss, Opts& opts){
 	}
 	std::cout << "=> 4.4.2:\t before print" << std::endl;
 	Printer.output_result_tree(ss.get_result_root());
-	std::cout << "=> 4.4.3:\t after print" << std::endl;
 	HYDLA_LOGGER_STANDARD(sstr.str());
+	std::cout << "=> 4.4.3:\t after print" << std::endl;
 
 	//todo : この std::cout << std::endl; を外すと、ログの出力が遅延して detail タグが先に閉じてしまう...
 	std::cout << std::endl;
