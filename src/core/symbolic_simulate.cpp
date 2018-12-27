@@ -246,7 +246,7 @@ int simulate(boost::shared_ptr<hydla::parse_tree::ParseTree> parse_tree)
 	simulator_->initialize(parse_tree);
 	std::cout << "=> 4.2:\t starting simulation" << std::endl;
 	simulator_->simulate();
-	std::cout << "=> 4.3:\t simulation terminated" << std::endl;
+	std::cout << "=> 4.3:\t function simulate() of sumulator_ terminated and proceeding to the next step" << std::endl;
 	if(!opts.ha_convert_mode)
 	{
 		output_result(*simulator_, opts);
