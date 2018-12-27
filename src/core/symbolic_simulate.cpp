@@ -249,6 +249,7 @@ int simulate(boost::shared_ptr<hydla::parse_tree::ParseTree> parse_tree)
 	std::cout << "=> 4.3:\t function simulate() of sumulator_ terminated and proceeding to the next step" << std::endl;
 	if(!opts.ha_convert_mode)
 	{
+		std::cout << "=> 4.4:\t option ha_convert_mode is set to false" << std::endl;
 		output_result(*simulator_, opts);
 	}
 	int simulation_status = simulator_->get_exit_status();
