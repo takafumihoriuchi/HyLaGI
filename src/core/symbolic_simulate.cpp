@@ -68,12 +68,15 @@ void output_result(Simulator& ss, Opts& opts){
 		sstr << "---------parameter condition(global)---------" << endl;
 		Printer.output_parameter_map(par_map);
 	}
+	std::cout << "=> 4.4.2:\t before print" << std::endl;
 	Printer.output_result_tree(ss.get_result_root());
+	std::cout << "=> 4.4.3:\t after print" << std::endl;
 	HYDLA_LOGGER_STANDARD(sstr.str());
 
 	//todo : この std::cout << std::endl; を外すと、ログの出力が遅延して detail タグが先に閉じてしまう...
 	std::cout << std::endl;
 
+	// ここでhydatファイルを作成する。
 	std::string of_name = cmdline_options.get<string>("output_name");
 	if(of_name.empty())
 	{
@@ -122,6 +125,7 @@ void output_result(Simulator& ss, Opts& opts){
 		writer.write(*simulator_, of_name, input_file_name + "_diff");
 	}
 
+	// csvファイルを作成する
 	if(cmdline_options.get<std::string>("tm") == "s") {
 		hydla::io::StdProfilePrinter().print_profile(ss.get_profile());
 	} else if(cmdline_options.get<std::string>("tm") == "c") {
