@@ -162,8 +162,8 @@ ostream &stream, const phase_result_t &result) const
 					break;
 			}
 		}
-		stream << "printing variable names" << "\n";
-		stream << it->first << "\t: " << it->second << "\n";
+
+		stream << "\t" << it->first << "\t: " << it->second << "\n";
 		if (opts.interval && it->second.unique() && result.phase_type == POINT_PHASE)
 		{
 			vector<parameter_map_t> par_maps = result.get_parameter_maps();
