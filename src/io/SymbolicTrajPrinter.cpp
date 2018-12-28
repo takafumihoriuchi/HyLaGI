@@ -214,7 +214,8 @@ void SymbolicTrajPrinter::output_one_phase(const phase_result_const_sptr_t& phas
 
 void SymbolicTrajPrinter::output_result_tree(const phase_result_const_sptr_t& root) const
 {
-  if (root->children.size() != 0)
+  ostream << "=> 4.4.1.1:\t in function output_result_tree()" << endl;
+  if (root->children.size() == 0)
   {
     ostream << "No Result." << endl;
     return;
@@ -224,6 +225,7 @@ void SymbolicTrajPrinter::output_result_tree(const phase_result_const_sptr_t& ro
   for (;it!=end;it++)
   {
     vector<std::string> result;
+    ostream << "=> 4.4.1.2:\t outputting result of result[" << i << "][" << j << "]" << endl;
     output_result_node(*it, result, i, j);
   }
 }
