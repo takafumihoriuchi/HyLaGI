@@ -59,7 +59,9 @@ void output_result(Simulator& ss, Opts& opts){
 
 	std::stringstream sstr;
 	sstr << "\n------ Result of Simulation ------\n";
-	hydla::io::SymbolicTrajPrinter Printer(backend_, sstr, opts.interval);
+	// Printer  はインスタンスの名前で、コンストラクタに引数を与えている
+	// hydla::io::SymbolicTrajPrinter Printer(backend_, sstr, opts.interval);
+	SymbolicTrajPrinter Printer(backend_, sstr, opts.interval);
 	if(opts.epsilon_mode >= 0){Printer.set_epsilon_mode(backend_,true);}
 
 	parameter_map_t par_map = ss.get_parameter_map();
@@ -68,7 +70,10 @@ void output_result(Simulator& ss, Opts& opts){
 		sstr << "---------parameter condition(global)---------" << endl;
 		Printer.output_parameter_map(par_map);
 	}
+	
 	Printer.output_result_tree(ss.get_result_root());
+	
+	// ここで結果の印刷をしている！！
 	std::cout << "=> 4.4.2:\t before print" << std::endl;
 	HYDLA_LOGGER_STANDARD(sstr.str());
 	std::cout << "=> 4.4.3:\t after print" << std::endl;
