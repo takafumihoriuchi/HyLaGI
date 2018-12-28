@@ -138,9 +138,10 @@ ostream &stream, const phase_result_t &result) const
 	variable_map_t vm = result.variable_map;
 	for (auto it = vm.begin(); it!=vm.end(); ++it) {
 
-		// ½ĞÎÏÊÑ¿ô¤ò»ØÄê¤·¤¿¾ì¹ç
+		// æ–‡å­—åŒ–ã‘
 		if (opts.output_mode != Opts::None)
 		{
+			stream << "printing variable names" << "\n";
 			bool hit = false;
 			for (auto it2 = opts.output_vars.begin(); it2 != opts.output_vars.end(); ++it2)
 			{
@@ -196,7 +197,7 @@ void SymbolicTrajPrinter::output_one_phase(const phase_result_const_sptr_t& phas
 		{
 			if (!par_maps[0].empty())
 			{
-				ostream << "---------parameter condition---------" << endl;
+				ostream << "\t---------parameter condition---------" << endl;
 				output_parameter_map(par_maps[0]);
 			}
 		}
@@ -205,7 +206,7 @@ void SymbolicTrajPrinter::output_one_phase(const phase_result_const_sptr_t& phas
 			int i = 0;
 			for (auto it = par_maps.begin(); it != par_maps.end(); it++, i++)
 			{
-				ostream << "---------parameter condition(" << i+1 << ")---------" << endl;
+				ostream << "\t---------parameter condition(" << i+1 << ")---------" << endl;
 				output_parameter_map(par_maps[i]);
 			}
 		}
