@@ -141,7 +141,6 @@ ostream &stream, const phase_result_t &result) const
 		// 文字化け
 		if (opts.output_mode != Opts::None)
 		{
-			stream << "printing variable names" << "\n";
 			bool hit = false;
 			for (auto it2 = opts.output_vars.begin(); it2 != opts.output_vars.end(); ++it2)
 			{
@@ -163,7 +162,7 @@ ostream &stream, const phase_result_t &result) const
 					break;
 			}
 		}
-		
+		stream << "printing variable names" << "\n";
 		stream << it->first << "\t: " << it->second << "\n";
 		if (opts.interval && it->second.unique() && result.phase_type == POINT_PHASE)
 		{
