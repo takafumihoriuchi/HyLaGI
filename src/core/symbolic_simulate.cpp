@@ -70,6 +70,7 @@ void output_result(Simulator& ss, Opts& opts){
 		Printer.output_parameter_map(par_map);
 	}
 	
+	// これでプリントしているはずだけど、下のHYDLA_LOGGER_STANDARDの直前につけた出力の方が先になされる。
 	Printer.output_result_tree(ss.get_result_root());
 	
 	// ここで結果の印刷をしている！！
