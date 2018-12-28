@@ -67,7 +67,7 @@ string SymbolicTrajPrinter::get_state_output(const phase_result_t& result) const
 
 void SymbolicTrajPrinter::output_asks(std::ostream &stream, const phase_result_t &phase)const
 {
-	stream << "positive \t: ";
+	stream << "\tpositive \t: ";
 	bool first = true;
 	for (auto ask : phase.get_diff_positive_asks())
 	{
@@ -77,7 +77,7 @@ void SymbolicTrajPrinter::output_asks(std::ostream &stream, const phase_result_t
 	}
 	stream << endl;
 
-	stream << "negative \t: ";
+	stream << "\tnegative \t: ";
 	first = true;
 	for (auto ask : phase.get_diff_negative_asks())
 	{
@@ -92,7 +92,7 @@ void SymbolicTrajPrinter::output_inconsistent_constraints(std::ostream &stream, 
 {
 	if (!phase.inconsistent_module_sets.empty())
 	{
-		stream << "unsat mod\t: ";
+		stream << "\tunsat mod\t: ";
 		bool first = true;
 		for (auto module_set : phase.inconsistent_module_sets)
 		{
@@ -103,7 +103,7 @@ void SymbolicTrajPrinter::output_inconsistent_constraints(std::ostream &stream, 
 	}
 	if (!phase.inconsistent_constraints.empty())
 	{
-		stream << "unsat cons\t: ";
+		stream << "\tunsat cons\t: ";
 		bool first = true;
 		for (auto constraint: phase.inconsistent_constraints)
 		{
