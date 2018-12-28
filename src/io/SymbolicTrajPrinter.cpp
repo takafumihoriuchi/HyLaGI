@@ -28,26 +28,26 @@ string SymbolicTrajPrinter::get_state_output(const phase_result_t& result) const
 	stringstream sstr;
 	if (result.phase_type == INTERVAL_PHASE)
 	{
-		sstr << "---------IP " << result.id << "---------" << endl;
-		sstr << "unadopted modules: " << result.unadopted_ms.get_name() << endl;
+		sstr << "\t---------IP " << result.id << "---------" << endl;
+		sstr << "\tunadopted modules: " << result.unadopted_ms.get_name() << endl;
 		output_inconsistent_constraints(sstr, result);
 		output_asks(sstr, result);
 		if (!result.end_time.undefined())
 		{
-			sstr << "t\t: " << result.current_time << "->" << result.end_time << "\n";
+			sstr << "\tt\t: " << result.current_time << "->" << result.end_time << "\n";
 		}
 		else
 		{
-			sstr << "t\t: " << result.current_time << "->" << "???" << "\n";
+			sstr << "\tt\t: " << result.current_time << "->" << "???" << "\n";
 		}
 	}
 	else
 	{
-		sstr << "---------PP " << result.id << "---------" << endl;
-		sstr << "unadopted modules: " << result.unadopted_ms.get_name() << endl;
+		sstr << "\t---------PP " << result.id << "---------" << endl;
+		sstr << "\tunadopted modules: " << result.unadopted_ms.get_name() << endl;
 		output_inconsistent_constraints(sstr, result);
 		output_asks(sstr, result);
-		sstr << "t\t: " << result.current_time << "\n";
+		sstr << "\tt\t: " << result.current_time << "\n";
 	}
 
 
