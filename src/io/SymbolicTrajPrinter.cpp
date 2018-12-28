@@ -236,7 +236,7 @@ void SymbolicTrajPrinter::output_result_node(const phase_result_const_sptr_t &no
 	if (node->children.size() == 0)
 	{
 		int current_case_num = case_num++;
-		ostream << "\n---------Case " << current_case_num << "---------" << endl;
+		ostream << "\n\t---------Case " << current_case_num << "---------" << endl;
 		vector<std::string>::const_iterator r_it = result.begin();
 		for (;r_it != result.end(); r_it++)
 		{
@@ -280,6 +280,7 @@ void SymbolicTrajPrinter::output_result_node(const phase_result_const_sptr_t &no
 			}
 		}
 
+		ostream << "\t";
 		// print why the simulation was terminated
 		switch(node->simulation_state)
 		{
