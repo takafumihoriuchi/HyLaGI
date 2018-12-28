@@ -58,7 +58,7 @@ void output_result(Simulator& ss, Opts& opts){
 	auto detail = logger::Detail(__FUNCTION__);
 
 	std::stringstream sstr;
-	sstr << "\n------ Result of Simulation ------\n";
+	sstr << "\n\t------ Result of Simulation ------\n";
 	// Printer  はインスタンスの名前で、コンストラクタに引数を与えている
 	hydla::io::SymbolicTrajPrinter Printer(backend_, sstr, opts.interval);
 	
@@ -66,7 +66,7 @@ void output_result(Simulator& ss, Opts& opts){
 	parameter_map_t par_map = ss.get_parameter_map();
 	if(!par_map.empty())
 	{
-		sstr << "---------parameter condition(global)---------" << endl;
+		sstr << "\t---------parameter condition(global)---------" << endl;
 		Printer.output_parameter_map(par_map);
 	}
 	
@@ -260,7 +260,7 @@ int simulate(boost::shared_ptr<hydla::parse_tree::ParseTree> parse_tree)
 	simulator_->simulate();
 
 	std::cout << "=> 4.3:\t simulation terminated" << std::endl;
-	// 
+	// ha = hybrid automaton
 	if(!opts.ha_convert_mode)
 	{
 		std::cout << "=> 4.4:\t option ha_convert_mode is set to false" << std::endl;

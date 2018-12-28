@@ -485,8 +485,8 @@ int hydla_main(int argc, char* argv[])
 	cout << "=> 4.0:\t calling simulate()" << endl;
 	int simulation_result = simulate(pt);
 
-	HYDLA_LOGGER_STANDARD("Simulation Time : ", simulation_timer.get_time_string());
-	HYDLA_LOGGER_STANDARD("Finish Time : ", main_timer.get_time_string());
+	HYDLA_LOGGER_STANDARD("\tSimulation Time : ", simulation_timer.get_time_string());
+	HYDLA_LOGGER_STANDARD("\tFinish Time : ", main_timer.get_time_string());
 	HYDLA_LOGGER_STANDARD("");
 
 	cout << "=> return " << simulation_result << " from hydla_main" << endl;
