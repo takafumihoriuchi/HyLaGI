@@ -214,7 +214,7 @@ void SymbolicTrajPrinter::output_one_phase(const phase_result_const_sptr_t& phas
 
 void SymbolicTrajPrinter::output_result_tree(const phase_result_const_sptr_t& root) const
 {
-  if (root->children.size() == 0)
+  if (root->children.size() != 0)
   {
     ostream << "No Result." << endl;
     return;

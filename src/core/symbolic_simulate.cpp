@@ -60,10 +60,9 @@ void output_result(Simulator& ss, Opts& opts){
 	std::stringstream sstr;
 	sstr << "\n------ Result of Simulation ------\n";
 	// Printer  はインスタンスの名前で、コンストラクタに引数を与えている
-	// hydla::io::SymbolicTrajPrinter Printer(backend_, sstr, opts.interval);
-	SymbolicTrajPrinter Printer(backend_, sstr, opts.interval);
+	hydla::io::SymbolicTrajPrinter Printer(backend_, sstr, opts.interval);
+	
 	if(opts.epsilon_mode >= 0){Printer.set_epsilon_mode(backend_,true);}
-
 	parameter_map_t par_map = ss.get_parameter_map();
 	if(!par_map.empty())
 	{
