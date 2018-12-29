@@ -10,6 +10,8 @@ namespace simulator {
 
 using namespace std;
 
+// メソッド名の後のコロン以降は、初期化指定子リストを意味する。
+// ここではSimulatora構造体にoptsを与え、変数printerにbackendを与えている。
 SequentialSimulator::SequentialSimulator(Opts &opts) : Simulator(opts), printer(backend)
 {
 	std::cout << "=> 4.1.0.1:\t Hello, we\'ve just created a new instance of SequentialSimulator\n";
