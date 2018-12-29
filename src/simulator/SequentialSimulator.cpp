@@ -52,19 +52,22 @@ phase_result_sptr_t SequentialSimulator::simulate()
 	return result_root_;
 }
 
+// シミュレーションの本体
 void SequentialSimulator::dfs(phase_result_sptr_t current)
 {
 	auto detail = logger::Detail(__FUNCTION__);
 
+	// 平時は呼ばれない
 	HYDLA_LOGGER_DEBUG_VAR(*current);
 	if (signal_handler::interrupted)
 	{
-		std::cout << "=> 5.2.0:\t IS THIS CALLED?????????????????????" << std::endl;
 		current->simulation_state = INTERRUPTED;
 		return;
 	}
 
 	phase_simulator_->apply_diff(*current);
+
+	std::cout << "=> 5.2.2:\t current->todo_list.empty(): " << current->todo_list.empty() << std::endl;
 
 	while (!current->todo_list.empty())
 	{
@@ -74,6 +77,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 		if (todo->simulation_state == NOT_SIMULATED)
 		{
 			process_one_todo(todo);
+			// --fdump_in_progressの時だけ実行される
 			if (opts_->dump_in_progress){
 				printer.output_one_phase(todo, "------ In Progress ------");
 			}
@@ -99,7 +103,8 @@ void SequentialSimulator::omit_following_todos(phase_result_sptr_t current)
 	{
 		phase_result_sptr_t not_selected_children = current->todo_list.front();
 		current->todo_list.pop_front();
-		if (not_selected_children->simulation_state != SIMULATED)
+		if (not_selected_children->simulati
+			on_state != SIMULATED)
 		{
 			current->children.push_back(not_selected_children);
 		}
