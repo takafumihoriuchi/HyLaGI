@@ -55,6 +55,7 @@ phase_result_sptr_t SequentialSimulator::simulate()
 // シミュレーションの本体
 void SequentialSimulator::dfs(phase_result_sptr_t current)
 {
+	std::cout << "=> 5.2.1111:\t testing" << std::endl;
 	auto detail = logger::Detail(__FUNCTION__);
 
 	// 平時は呼ばれない
