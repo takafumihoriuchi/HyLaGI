@@ -59,6 +59,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 	HYDLA_LOGGER_DEBUG_VAR(*current);
 	if (signal_handler::interrupted)
 	{
+		std::cout << "=> 5.2.0:\t IS THIS CALLED?????????????????????" << std::endl;
 		current->simulation_state = INTERRUPTED;
 		return;
 	}
@@ -78,6 +79,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 			}
 		}
 
+		// 核心：ここら辺でフェーズを進めるシミュレーションを行なっている。 // 再帰
 		std::cout << "=> 5.2.1:\t looping" << std::endl;
 		dfs(todo);
 		if (!opts_->nd_mode || (opts_->stop_at_failure && assertion_failed))
