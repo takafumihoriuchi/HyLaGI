@@ -248,7 +248,7 @@ int simulate(boost::shared_ptr<hydla::parse_tree::ParseTree> parse_tree)
 		simulator_ = new SequentialSimulator(opts);
 	}
 
-	std::cout << "=> 4.1.1:\t setting up backend solver : " << backend_ << std::endl;
+	std::cout << "=> 4.1.1:\t setting up backend solver : " << *backend_ << std::endl;
 	simulator_->set_backend(backend_);
 	std::cout << "=> 4.1.2:\t setting up phase simulator" << std::endl;
 	simulator_->set_phase_simulator(new PhaseSimulator(simulator_, opts));
