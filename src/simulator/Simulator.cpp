@@ -142,13 +142,17 @@ parameter_t Simulator::introduce_parameter(const parameter_t &param, const Value
   return param;
 }
 
+// phase_result_sptr_t is a typedef of boost::shared_ptr<hydla::simulator::PhaseResult>
+// boostは公式に近いC++のライブラリ
+// shared_ptr：ptrはpointerのこと。sharedは、複数のポインタが同じオブジェクトを指すことができることを意味している。
 phase_result_sptr_t Simulator::make_initial_todo()
 {
   phase_result_sptr_t todo(new PhaseResult());
+
   todo->parent = result_root_.get();
   result_root_->todo_list.push_back(todo);
   todo->current_time = value_t("0");
-  todo->id = 1;
+  todo->id = 100;
   todo->phase_type = POINT_PHASE;
   todo->step = 0;
   return todo;

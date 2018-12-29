@@ -27,11 +27,12 @@ phase_result_sptr_t SequentialSimulator::simulate()
 
 	std::string error_str = "";
 	std::cout << "=> 5.1:\t calling make_initial_todo()" << std::endl;
+	// シミュレーションのスタックに最初の状態を詰め込む
 	make_initial_todo();
 
 	try
 	{
-		std::cout << "=> 5.2:\t trying to call dfs()" << std::endl;
+		std::cout << "=> 5.2:\t calling dfs() with try" << std::endl;
 		dfs(result_root_);
 	}
 	catch(const std::exception &se)
