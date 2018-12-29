@@ -55,7 +55,6 @@ phase_result_sptr_t SequentialSimulator::simulate()
 // シミュレーションの本体
 void SequentialSimulator::dfs(phase_result_sptr_t current)
 {
-	std::cout << "=> 5.2.1111:\t testing" << std::endl;
 	auto detail = logger::Detail(__FUNCTION__);
 
 	// 平時は呼ばれない
@@ -68,7 +67,6 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 
 	phase_simulator_->apply_diff(*current);
 
-	std::cout << "=> 5.2.2:\t current->todo_list.empty(): " << std::endl;
 	std::cout << "=> 5.2.2:\t current->todo_list.empty(): " << current->todo_list.empty() << std::endl;
 
 	while (!current->todo_list.empty())
@@ -86,7 +84,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 		}
 
 		// 核心：ここら辺でフェーズを進めるシミュレーションを行なっている。 // 再帰
-		std::cout << "=> 5.2.1:\t looping" << std::endl;
+		std::cout << "=> 5.2.1:\t looooping" << std::endl;
 		dfs(todo);
 		if (!opts_->nd_mode || (opts_->stop_at_failure && assertion_failed))
 		{
