@@ -67,6 +67,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 
 	phase_simulator_->apply_diff(*current);
 
+	std::cout << "=> 5.2.2:\t current->todo_list.empty(): " << std::endl;
 	std::cout << "=> 5.2.2:\t current->todo_list.empty(): " << current->todo_list.empty() << std::endl;
 
 	while (!current->todo_list.empty())
