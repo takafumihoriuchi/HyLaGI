@@ -28,6 +28,7 @@ phase_result_sptr_t SequentialSimulator::simulate()
 	std::string error_str = "";
 	std::cout << "=> 5.1:\t calling make_initial_todo()" << std::endl;
 	// シミュレーションのスタックに最初の状態を詰め込む
+	// initial_todoは、最初にPPを表している。
 	make_initial_todo();
 
 	try
@@ -77,6 +78,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 			}
 		}
 
+		std::cout << "=> 5.2.1:\t looping" << std::endl;
 		dfs(todo);
 		if (!opts_->nd_mode || (opts_->stop_at_failure && assertion_failed))
 		{
@@ -88,6 +90,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 	phase_simulator_->revert_diff(*current);
 }
 
+// omit：省く
 void SequentialSimulator::omit_following_todos(phase_result_sptr_t current)
 {
 	while (!current->todo_list.empty())

@@ -152,7 +152,7 @@ phase_result_sptr_t Simulator::make_initial_todo()
   todo->parent = result_root_.get();
   result_root_->todo_list.push_back(todo);
   todo->current_time = value_t("0");
-  todo->id = 100;
+  todo->id = 1;
   todo->phase_type = POINT_PHASE;
   todo->step = 0;
   return todo;
