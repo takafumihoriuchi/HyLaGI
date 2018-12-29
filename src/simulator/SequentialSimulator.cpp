@@ -12,6 +12,7 @@ using namespace std;
 
 SequentialSimulator::SequentialSimulator(Opts &opts) : Simulator(opts), printer(backend)
 {
+	std::cout << "Hello, we\'ve just created a new instance of SequentialSimulator\n";
 }
 
 SequentialSimulator::~SequentialSimulator()
