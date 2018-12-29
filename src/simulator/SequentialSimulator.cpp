@@ -26,10 +26,12 @@ phase_result_sptr_t SequentialSimulator::simulate()
 	std::cout << "=> 5:\t IN SEQUENTIAL SIMULATOR" << std::endl;
 
 	std::string error_str = "";
+	std::cout << "=> 5.1:\t calling make_initial_todo()" << std::endl;
 	make_initial_todo();
 
 	try
 	{
+		std::cout << "=> 5.2:\t trying to call dfs()" << std::endl;
 		dfs(result_root_);
 	}
 	catch(const std::exception &se)
@@ -43,7 +45,7 @@ phase_result_sptr_t SequentialSimulator::simulate()
 		exit_status = EXIT_FAILURE;
 	}
 
-	std::cout << "=> 5.1:\t returning from simulate()" << std::endl;
+	std::cout << "=> 5.3:\t returning from simulate()" << std::endl;
 	HYDLA_LOGGER_DEBUG("%% simulation ended");
 	return result_root_;
 }
