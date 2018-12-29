@@ -6,20 +6,22 @@
 namespace hydla {
 namespace simulator {
 
+// SequentialSimulatorクラスは Simulatorクラスを継承する
+// Simulatorクラスでpublicなメソッドは、SequentialSimulatorクラスでもpublicなものとして継承
 class SequentialSimulator: public Simulator
 {
 public:
-  SequentialSimulator(Opts &opts);
-  virtual ~SequentialSimulator();
-  /**
-   * 与えられた解候補モジュール集合を元にシミュレーション実行をおこなう
-   */
-  virtual phase_result_sptr_t simulate();
+	SequentialSimulator(Opts &opts);
+	virtual ~SequentialSimulator();
+	/**
+	 * 与えられた解候補モジュール集合を元にシミュレーション実行をおこなう
+	 */
+	virtual phase_result_sptr_t simulate();
 
 private:
-  void dfs(phase_result_sptr_t current);
-  void omit_following_todos(phase_result_sptr_t current);
-  io::SymbolicTrajPrinter printer;
+	void dfs(phase_result_sptr_t current);
+	void omit_following_todos(phase_result_sptr_t current);
+	io::SymbolicTrajPrinter printer;
 };
 
 } // namespace simulator
