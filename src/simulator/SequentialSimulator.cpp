@@ -103,8 +103,7 @@ void SequentialSimulator::omit_following_todos(phase_result_sptr_t current)
 	{
 		phase_result_sptr_t not_selected_children = current->todo_list.front();
 		current->todo_list.pop_front();
-		if (not_selected_children->simulati
-			on_state != SIMULATED)
+		if (not_selected_children->simulation_state != SIMULATED)
 		{
 			current->children.push_back(not_selected_children);
 		}
