@@ -55,8 +55,11 @@ typedef std::set<ask_t >                                           asks_t;
 typedef std::set<boost::shared_ptr<symbolic_expression::Always> >  always_set_t;
 typedef hierarchy::ModuleSet                              module_set_t;
 
-typedef boost::shared_ptr<PhaseResult>                    phase_result_sptr_t;
+// a shared_ptr of type PhaseResult
+typedef boost::shared_ptr<PhaseResult>                    phase_result_sptr_t; // "*_t" for "type" ??
+// a vector of type "phase_result_sptr_t"
 typedef std::vector<phase_result_sptr_t >                 phase_result_sptrs_t;
+// a list of type "phase_result_sprt_t"
 typedef std::list<phase_result_sptr_t >                   phase_list_t;
 
 typedef Value                                             value_t;

@@ -28,13 +28,15 @@ phase_result_sptr_t SequentialSimulator::simulate()
 	std::string error_str = "";
 	std::cout << "=> 5.1:\t calling make_initial_todo()" << std::endl;
 	// シミュレーションのスタックに最初の状態を詰め込む
-	// initial_todoは、最初にPPを表している。
+	// initial_todoは、最初のPPを表している。
 	make_initial_todo();
 
 	try
 	{
 		std::cout << "=> 5.2:\t calling dfs() with try" << std::endl;
 		dfs(result_root_);
+		// result_root_: root of the tree of result trajectories
+		// result_root_自体は、Simulatorクラスのprotectedなメンバ変数
 	}
 	catch(const std::exception &se)
 	{
@@ -52,7 +54,7 @@ phase_result_sptr_t SequentialSimulator::simulate()
 	return result_root_;
 }
 
-// シミュレーションの本体
+// シミュレーションの本体 // currentがphaseの情報を保持している
 void SequentialSimulator::dfs(phase_result_sptr_t current)
 {
 	auto detail = logger::Detail(__FUNCTION__);
@@ -65,15 +67,19 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 		return;
 	}
 
+	// PhaseSimulator.cppの関数を呼ぶ
+	std::cout << "=> 5.2.1:\t calling apply_diff()" << current->todo_list.empty() << std::endl;
 	phase_simulator_->apply_diff(*current);
 
 	std::cout << "=> 5.2.2:\t current->todo_list.empty(): " << current->todo_list.empty() << std::endl;
-
 	while (!current->todo_list.empty())
 	{
+		// front()やpop_front()はC++に組み込まれた関数
 		phase_result_sptr_t todo = current->todo_list.front();
+		// 一つのtodoに何が入っているのかが知りたい。
 		current->todo_list.pop_front();
 		profile_vector_->insert(todo);
+
 		if (todo->simulation_state == NOT_SIMULATED)
 		{
 			process_one_todo(todo);
