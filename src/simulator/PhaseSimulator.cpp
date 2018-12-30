@@ -1996,7 +1996,7 @@ void PhaseSimulator::reset_parameter_constraint(ConstraintStore par_cons)
 // まずは、apply_diffの"diff"がなんの略であるかを特定する
 void PhaseSimulator::apply_diff(const PhaseResult &phase)
 {
-	std::cout << "=> 5.2.1.1:\t inside apply_diff()" << current->todo_list.empty() << std::endl;
+	std::cout << "=> 5.2.1.1:\t inside apply_diff()" << std::endl;
 	// このfor構文は、型推論でイテレータを自動で生成し、各要素のコピーをdiffに取得する
 	for (auto diff : phase.module_diff)
 	{

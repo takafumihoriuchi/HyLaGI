@@ -68,7 +68,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 	}
 
 	// PhaseSimulator.cppの関数を呼ぶ
-	std::cout << "=> 5.2.1:\t calling apply_diff()" << current->todo_list.empty() << std::endl;
+	std::cout << "=> 5.2.1:\t calling apply_diff()" << std::endl;
 	phase_simulator_->apply_diff(*current);
 
 	std::cout << "=> 5.2.2:\t current->todo_list.empty(): " << current->todo_list.empty() << std::endl;
@@ -90,7 +90,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 		}
 
 		// 核心：ここら辺でフェーズを進めるシミュレーションを行なっている。 // 再帰
-		std::cout << "=> 5.2.1:\t looooping" << std::endl;
+		std::cout << "=> 5.2.3:\t looooping" << std::endl;
 		dfs(todo);
 		if (!opts_->nd_mode || (opts_->stop_at_failure && assertion_failed))
 		{
