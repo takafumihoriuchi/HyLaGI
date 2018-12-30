@@ -2000,17 +2000,17 @@ void PhaseSimulator::apply_diff(const PhaseResult &phase)
 	// このfor構文は、型推論でイテレータを自動で生成し、各要素のコピーをdiffに取得する
 	for (auto diff : phase.module_diff)
 	{
-		std::cout << "=> 5.2.1.2:\t first for-loop" << std::endl;
+		// std::cout << "=> 5.2.1.2:\t first for-loop" << std::endl;
 		relation_graph_->set_adopted(diff.first, diff.second);
 	}
 	for (auto positive : phase.get_diff_positive_asks())
 	{
-		std::cout << "=> 5.2.1.3:\t second for-loop" << std::endl;
+		// std::cout << "=> 5.2.1.3:\t second for-loop" << std::endl;
 		relation_graph_->set_entailed(positive, true);
 	}
 	for (auto negative : phase.get_diff_negative_asks())
 	{
-		std::cout << "=> 5.2.1.4:\t third for-loop" << std::endl;
+		// std::cout << "=> 5.2.1.4:\t third for-loop" << std::endl;
 		relation_graph_->set_entailed(negative, false);
 	}
 }

@@ -397,6 +397,7 @@ void RelationGraph::collect_node(VariableNode* node, ConstraintStore *constraint
 
 void RelationGraph::set_adopted(const module_t &mod, bool adopted)
 {
+	std::cout << "=> 5.2.1.2.2:\t inner set_adopted" << std::endl;
 	if (!module_tell_nodes_map.count(mod)) {
 		throw HYDLA_ERROR("module " + mod.first + " is not found");
 	}
@@ -410,6 +411,7 @@ void RelationGraph::set_adopted(const module_t &mod, bool adopted)
 
 void RelationGraph::set_adopted(const module_set_t &ms, bool adopted)
 {
+	std::cout << "=> 5.2.1.2.1:\t outer set_adopted" << std::endl;
 	for(auto module : ms)
 	{
 		set_adopted(module, adopted);
