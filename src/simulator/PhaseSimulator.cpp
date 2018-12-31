@@ -90,7 +90,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		}
 		if (todo->parent->parent == result_root.get()) {
 			// remove constraints without always at first interval phase
-			std::cout << "=> 5.2.3.1.2:\t removing constraints without always" << std::endl;
+			std::cout << "=> 5.2.3.1.2:\t removing constraints without always (at only the first interval phase)" << std::endl;
 			AlwaysFinder always_finder;
 			ConstraintStore non_always;
 			always_set_t always_set;
