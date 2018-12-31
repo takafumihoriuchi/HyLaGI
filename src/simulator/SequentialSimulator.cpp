@@ -57,6 +57,7 @@ phase_result_sptr_t SequentialSimulator::simulate()
 // シミュレーションの本体 // currentがphaseの情報を保持している
 void SequentialSimulator::dfs(phase_result_sptr_t current)
 {
+	std::cout << "\n=> 5.2.0:\t entered dfs()" << std::endl;
 	auto detail = logger::Detail(__FUNCTION__);
 
 	// 平時は呼ばれない
