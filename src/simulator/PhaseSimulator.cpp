@@ -2002,6 +2002,9 @@ void PhaseSimulator::apply_diff(const PhaseResult &phase)
 	{
 		// std::cout << "=> 5.2.1.2:\t first for-loop" << std::endl;
 		relation_graph_->set_adopted(diff.first, diff.second);
+		// diff.firstとdiff.secondは何を表しているのか
+		// diff.first : const module_t &mod => first item of pair => key in maps
+		// diff.second: bool adopted => second item of pair => value in maps 
 	}
 	for (auto positive : phase.get_diff_positive_asks())
 	{

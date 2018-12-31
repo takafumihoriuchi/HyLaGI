@@ -82,8 +82,8 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 
 		if (todo->simulation_state == NOT_SIMULATED)
 		{
-			process_one_todo(todo);
-			// --fdump_in_progressの時だけ実行される
+			process_one_todo(todo); // ここからSimulator.cppの関数に飛ぶ
+			// --fdump_in_progressの時には実行される
 			if (opts_->dump_in_progress){
 				printer.output_one_phase(todo, "------ In Progress ------");
 			}

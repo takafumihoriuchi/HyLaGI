@@ -397,6 +397,7 @@ void RelationGraph::collect_node(VariableNode* node, ConstraintStore *constraint
 
 void RelationGraph::set_adopted(const module_t &mod, bool adopted)
 {
+	// PhaseSimulator.cppのapply_diff()からは、こちらのset_adopted()が呼ばれている
 	std::cout << "=> 5.2.1.2.2:\t inner set_adopted" << std::endl;
 	if (!module_tell_nodes_map.count(mod)) {
 		throw HYDLA_ERROR("module " + mod.first + " is not found");
