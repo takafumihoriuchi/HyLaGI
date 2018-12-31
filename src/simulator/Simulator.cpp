@@ -160,6 +160,7 @@ phase_result_sptr_t Simulator::make_initial_todo()
 
 phase_list_t Simulator::process_one_todo(phase_result_sptr_t& todo)
 {
+	std::cout << "=> 5.2.3.0:\t in process_one_todo()" << std::endl;
 	if (opts_->max_phase >= 0 && todo->step >= opts_->max_phase)
 	{
 		todo->parent->simulation_state = simulator::STEP_LIMIT;
@@ -174,6 +175,7 @@ phase_list_t Simulator::process_one_todo(phase_result_sptr_t& todo)
 	try
 	{
 		timer::Timer phase_timer;
+		std::cout << "=> 5.2.3.1:\t calling process_todo()" << std::endl;
 		result_list = phase_simulator_->process_todo(todo); // PhaseSimulator.cppの関数に飛ぶ
 		todo->profile["EntirePhase"] += phase_timer.get_elapsed_us();
 	}

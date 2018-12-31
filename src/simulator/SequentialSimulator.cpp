@@ -83,6 +83,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 
 		if (todo->simulation_state == NOT_SIMULATED)
 		{
+			std::cout << "=> 5.2.3:\t calling process_one_todo()" << std::endl;
 			process_one_todo(todo); // ここからSimulator.cppの関数に飛ぶ
 			// --fdump_in_progressの時には実行される
 			if (opts_->dump_in_progress){
@@ -91,7 +92,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 		}
 
 		// 核心：ここら辺でフェーズを進めるシミュレーションを行なっている。 // 再帰
-		std::cout << "=> 5.2.3:\t looooping" << std::endl;
+		std::cout << "=> 5.2.4:\t looooping" << std::endl;
 		dfs(todo);
 		if (!opts_->nd_mode || (opts_->stop_at_failure && assertion_failed))
 		{

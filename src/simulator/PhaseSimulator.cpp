@@ -57,6 +57,7 @@ PhaseSimulator::~PhaseSimulator() {}
 
 phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 {
+	std::cout << "=> 5.2.3.1.0:\t in process_todo()" << std::endl;
 	timer::Timer phase_timer;
 	module_set_container->reset();
 	todo->inconsistent_module_sets.clear();
@@ -65,6 +66,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 
 	if (todo->parent == result_root.get())
 	{
+		std::cout << "=> 5.2.3.1.1:\t first phase??" << std::endl;
 		for (auto module : module_set_container->get_max_module_set())
 			{
 				relation_graph_->set_expanded_recursive(module.second, true);
