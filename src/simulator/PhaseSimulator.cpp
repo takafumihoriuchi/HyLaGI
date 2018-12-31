@@ -64,13 +64,11 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	todo->inconsistent_constraints.clear();
 	aborting = false;
 
-	if (todo->parent == result_root.get())
-	{
-		std::cout << "=> 5.2.3.1.1:\t first phase??" << std::endl;
-		for (auto module : module_set_container->get_max_module_set())
-			{
-				relation_graph_->set_expanded_recursive(module.second, true);
-			}
+	if (todo->parent == result_root.get()) {
+		std::cout << "=> 5.2.3.1.1:\t this is the first PP phase" << std::endl;
+		for (auto module : module_set_container->get_max_module_set()) {
+			relation_graph_->set_expanded_recursive(module.second, true);
+		}
 		todo->diff_sum.add_constraint_store(relation_graph_->get_constraints());
 		// // for auto abstraction
 		// AlwaysFinder always_finder;
@@ -85,9 +83,8 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// for (auto constraint : non_always)relation_graph_->set_expanded_atomic(constraint, false);
 		// for (auto ask : nonalways_asks)relation_graph_->set_expanded_atomic(ask, false);
 		// //
-	}
-	else
-	{
+	} else {
+		std::cout << "=> 5.2.3.1.1:\t this is NOT the first PP phase" << std::endl;
 		if (todo->phase_type == INTERVAL_PHASE)
 			todo->set_parameter_constraint(todo->parent->get_parameter_constraint());
 
