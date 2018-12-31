@@ -84,13 +84,15 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// for (auto ask : nonalways_asks)relation_graph_->set_expanded_atomic(ask, false);
 		// //
 	} else {
+		// ここに何かを記述すれば、一回目以外のフェーズで毎回行う処理を指定できる。
 		std::cout << "=> 5.2.3.1.1:\t this is NOT the first PP phase" << std::endl;
 		if (todo->phase_type == INTERVAL_PHASE) {
+			std::cout << "=> 5.2.3.1.2:\t this is an IP" << std::endl;
 			todo->set_parameter_constraint(todo->parent->get_parameter_constraint());
 		}
 		if (todo->parent->parent == result_root.get()) {
 			// remove constraints without always at first interval phase
-			std::cout << "=> 5.2.3.1.2:\t removing constraints without always (at only the first interval phase)" << std::endl;
+			std::cout << "=> 5.2.3.1.3:\t removing constraints without always (at only the first interval phase)" << std::endl;
 			AlwaysFinder always_finder;
 			ConstraintStore non_always;
 			always_set_t always_set;
