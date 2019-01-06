@@ -108,8 +108,8 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		todo->set_parameter_constraint(get_current_parameter_constraint());
 		todo->parent->children.push_back(todo);
 	}
-	else
-	{
+	else {
+		std::cout << "=> 5.2.3.1.2:\t not 空っぽ" << std::endl;
 		for (auto phase : phase_list)
 		{
 			make_next_todo(phase);
