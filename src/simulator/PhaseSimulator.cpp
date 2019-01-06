@@ -30,10 +30,8 @@
 
 #pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
 
-namespace hydla
-{
-namespace simulator
-{
+namespace hydla {
+namespace simulator {
 
 using namespace std;
 using namespace boost;
@@ -65,16 +63,21 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	todo->inconsistent_constraints.clear();
 	aborting = false;
 
-	if (todo->parent == result_root.get()) { // first PP
+	// first PP
+	if (todo->parent == result_root.get()) {
 		for (auto module : module_set_container->get_max_module_set()) {
 			relation_graph_->set_expanded_recursive(module.second, true);
 		}
 		todo->diff_sum.add_constraint_store(relation_graph_->get_constraints());
-	} else { // this is NOT the first PP
-		if (todo->phase_type == INTERVAL_PHASE) { // this is an IP
+	}
+	// IP or NOT the first PP
+	else {
+		// IP
+		if (todo->phase_type == INTERVAL_PHASE) {
 			todo->set_parameter_constraint(todo->parent->get_parameter_constraint());
 		}
-		if (todo->parent->parent == result_root.get()) { // first IP
+		// first IP
+		if (todo->parent->parent == result_root.get()) {
 			AlwaysFinder always_finder; // class of simulator/AlwaysFinder.h
 			ConstraintStore non_always;
 			always_set_t always_set;
@@ -87,18 +90,19 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			for (auto ask : nonalways_asks)
 				relation_graph_->set_expanded_atomic(ask, false);
 		}
-
+		// IP
 		if (todo->phase_type == INTERVAL_PHASE) {
-			std::cout << "=> 5.2.3.1.1:\t this is an IP" << std::endl;
 			todo->prev_map = todo->parent->variable_map;
 		}
 	}
 
-	if (todo->phase_type == POINT_PHASE)backend_->call("setCurrentTime", true, 1, "vln", "", &todo->current_time);
+	// PP
+	if (todo->phase_type == POINT_PHASE)
+		backend_->call("setCurrentTime", true, 1, "vln", "", &todo->current_time);
 
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
-	if (phase_list.empty())
-	{
+	if (phase_list.empty()) {
+		std::cout << "=> 5.2.3.1.1:\t 空っぽ" << std::endl;
 		todo->simulation_state = INCONSISTENCY;
 		todo->set_parameter_constraint(get_current_parameter_constraint());
 		todo->parent->children.push_back(todo);
