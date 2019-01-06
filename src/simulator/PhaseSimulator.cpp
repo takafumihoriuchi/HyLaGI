@@ -100,6 +100,10 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	if (todo->phase_type == POINT_PHASE)
 		backend_->call("setCurrentTime", true, 1, "vln", "", &todo->current_time);
 
+	// HOR: this section is for testing
+	if (todo->phase_type == POINT_PHASE) { // monotonicity check in every PP
+		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST" << std::endl;
+	}
 
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
 	if (phase_list.empty()) {
