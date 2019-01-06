@@ -65,29 +65,15 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	aborting = false;
 
 	if (todo->parent == result_root.get()) {
-		std::cout << "=> 5.2.3.1.1:\t this is the first PP phase" << std::endl;
+		// first PP phase
 		for (auto module : module_set_container->get_max_module_set()) {
 			relation_graph_->set_expanded_recursive(module.second, true);
 		}
 		todo->diff_sum.add_constraint_store(relation_graph_->get_constraints());
-		// // for auto abstraction
-		// AlwaysFinder always_finder;
-		// ConstraintStore non_always;
-		// always_set_t always_set;
-		// asks_t diff_positives = todo->parent->get_diff_positive_asks();
-		// asks_t nonalways_asks;
-		// for (auto module : module_set_container->get_max_module_set())
-		//   {
-		//     always_finder.find_always(module.second, &always_set, &non_always, &diff_positives, &nonalways_asks);
-		//   }
-		// for (auto constraint : non_always)relation_graph_->set_expanded_atomic(constraint, false);
-		// for (auto ask : nonalways_asks)relation_graph_->set_expanded_atomic(ask, false);
-		// //
 	} else {
-		// ここに何かを記述すれば、一回目以外のフェーズで毎回行う処理を指定できる。
-		std::cout << "=> 5.2.3.1.1:\t this is NOT the first PP phase" << std::endl;
+		// this is NOT the first PP phase
 		if (todo->phase_type == INTERVAL_PHASE) {
-			std::cout << "=> 5.2.3.1.2:\t this is an IP" << std::endl;
+			// this is an IP phase
 			todo->set_parameter_constraint(todo->parent->get_parameter_constraint());
 		}
 		if (todo->parent->parent == result_root.get()) {
