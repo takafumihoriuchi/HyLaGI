@@ -115,7 +115,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		std::cout << "\t\t=> 5.2.3.1.1:\t todo->variable_map: " << todo->variable_map << std::endl;
 
 		// ここから
-		variable_map_t vm = result.variable_map;
+		variable_map_t vm = todo.variable_map;
 		for (auto it = vm.begin(); it!=vm.end(); ++it) {
 			// 文字化け
 			if (opts.output_mode != Opts::None) {
