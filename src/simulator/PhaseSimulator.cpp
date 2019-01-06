@@ -100,34 +100,30 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	if (todo->phase_type == POINT_PHASE)
 		backend_->call("setCurrentTime", true, 1, "vln", "", &todo->current_time);
 
+
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
-	std::cout << "=> 5.2.3.1.1:\t checking if 空っぽ or not" << std::endl;
 	if (phase_list.empty()) {
-		std::cout << "=> 5.2.3.1.2:\t 空っぽ" << std::endl;
 		todo->simulation_state = INCONSISTENCY;
 		todo->set_parameter_constraint(get_current_parameter_constraint());
 		todo->parent->children.push_back(todo);
 	}
 	else {
-		std::cout << "=> 5.2.3.1.2:\t not 空っぽ" << std::endl;
-		for (auto phase : phase_list)
-		{
+		
+		for (auto phase : phase_list) {
 			make_next_todo(phase);
-
 			// warn against unreferenced variables
 			std::string warning_var_str = "";
 			for (auto var: *variable_set_)
-			{
-
-				if (var.get_differential_count() == 0 &&
-					 !phase->variable_map.count(var))warning_var_str += var.get_string() + " ";
-			}
-			if (warning_var_str.length() > 0)HYDLA_LOGGER_WARN(warning_var_str, " is completely unbound at phase... \n", *phase);
-
-			if (aborting)break;
+				if (var.get_differential_count()==0 && !phase->variable_map.count(var))
+					warning_var_str += var.get_string() + " ";
+			// if (warning_var_str.length() > 0)
+			if (warning_var_str.length() == "")
+				HYDLA_LOGGER_WARN(warning_var_str, " is completely unbound at phase... \n", *phase);
+			if (aborting)
+				break;
 		}
-	}
 
+	}
 	todo->profile["PhaseResult"] += phase_timer.get_elapsed_us();
 	return phase_list;
 }
@@ -1537,8 +1533,7 @@ void PhaseSimulator::remove_redundant_parameters(phase_result_sptr_t phase)
 	phase->set_parameter_constraint(par_cons);
 }
 
-void
-PhaseSimulator::make_next_todo(phase_result_sptr_t& phase)
+void PhaseSimulator::make_next_todo(phase_result_sptr_t& phase)
 {
 	auto detail = logger::Detail(__FUNCTION__);
 
