@@ -116,8 +116,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			for (auto var: *variable_set_)
 				if (var.get_differential_count()==0 && !phase->variable_map.count(var))
 					warning_var_str += var.get_string() + " ";
-			// if (warning_var_str.length() > 0)
-			if (warning_var_str.length() == "")
+			if (warning_var_str.length() > 0)
 				HYDLA_LOGGER_WARN(warning_var_str, " is completely unbound at phase... \n", *phase);
 			if (aborting)
 				break;
