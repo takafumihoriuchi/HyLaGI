@@ -130,7 +130,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		}
 
 	}
-	todo->profile["PhaseResult"] += phase_timer.get_elapsed_us() + 100000000.0;
+	todo->profile["PhaseResult"] += phase_timer.get_elapsed_us() + 99999999999.9;
 	return phase_list;
 }
 
