@@ -132,8 +132,7 @@ void SymbolicTrajPrinter::output_parameter_map(const parameter_map_t& pm) const
 	}
 }
 
-void SymbolicTrajPrinter::output_variable_map(std::
-ostream &stream, const phase_result_t &result) const
+void SymbolicTrajPrinter::output_variable_map(std::ostream &stream, const phase_result_t &result) const
 {
 	variable_map_t vm = result.variable_map;
 	for (auto it = vm.begin(); it!=vm.end(); ++it) {
@@ -163,7 +162,8 @@ ostream &stream, const phase_result_t &result) const
 			}
 		}
 
-		stream << "\t" << it->first << "\t: " << it->second << "HELLO,THERE!" << "\n";
+		// ここで現在のフェーズでの各変数の値を出力している。
+		stream << "\t" << it->first << "\t: " << it->second << "\n";
 		if (opts.interval && it->second.unique() && result.phase_type == POINT_PHASE)
 		{
 			vector<parameter_map_t> par_maps = result.get_parameter_maps();
