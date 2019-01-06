@@ -101,8 +101,9 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		backend_->call("setCurrentTime", true, 1, "vln", "", &todo->current_time);
 
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
+	std::cout << "=> 5.2.3.1.1:\t checking if 空っぽ or not" << std::endl;
 	if (phase_list.empty()) {
-		std::cout << "=> 5.2.3.1.1:\t 空っぽ" << std::endl;
+		std::cout << "=> 5.2.3.1.2:\t 空っぽ" << std::endl;
 		todo->simulation_state = INCONSISTENCY;
 		todo->set_parameter_constraint(get_current_parameter_constraint());
 		todo->parent->children.push_back(todo);
