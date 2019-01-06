@@ -137,6 +137,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			// 			break;
 			// 	}
 			// }
+			std::cout << "Hey, there." << std::endl;
 			std::cout << "\t" << it->first << "\t: " << it->second << "\n";
 		}
 		// ここまで
