@@ -101,32 +101,30 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	if (todo->phase_type == POINT_PHASE)
 		backend_->call("setCurrentTime", true, 1, "vln", "", &todo->current_time);
 
-	// HOR: this section is for testing the implementations of 卒論研究
-	// ① まずは「各PPでの変数の値」を出力する
-	if (todo->phase_type == POINT_PHASE) { // monotonicity check in every PP
-		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST" << std::endl;
-		std::cout << "\t=> 5.2.3.1.1:\t This is PP " << todo->id << std::endl;
-		// std::cout << "\t=> 5.2.3.1.2:\t todo->unadopted_ms.get_name(): " << todo->unadopted_ms.get_name() << std::endl; // make_next_todo(phase) の後でないと意味を持たない
-		// モデルに登場する全ての変数を出力する。
-		std::cout << "\t=> 5.2.3.1.1:\t all variables in model" << std::endl;
-		for (auto var: *variable_set_)
-			std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << var.get_string() << std::endl;
-		std::cout << "\t=> 5.2.3.1.1:\t value of variable at current phase" << std::endl;
-		std::cout << "\t\t=> 5.2.3.1.1:\t todo->variable_map: " << todo->variable_map << std::endl;
+	// // HOR: this section is for testing the implementations of 卒論研究
+	// // ① まずは「各PPでの変数の値」を出力する
+	// if (todo->phase_type == POINT_PHASE) { // monotonicity check in every PP
+	// 	std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST" << std::endl;
+	// 	std::cout << "\t=> 5.2.3.1.1:\t This is PP " << todo->id << std::endl;
+	// 	// std::cout << "\t=> 5.2.3.1.2:\t todo->unadopted_ms.get_name(): " << todo->unadopted_ms.get_name() << std::endl; // make_next_todo(phase) の後でないと意味を持たない
+	// 	// モデルに登場する全ての変数を出力する。
+	// 	std::cout << "\t=> 5.2.3.1.1:\t all variables in model" << std::endl;
+	// 	for (auto var: *variable_set_)
+	// 		std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << var.get_string() << std::endl;
+	// 	std::cout << "\t=> 5.2.3.1.1:\t value of variable at current phase" << std::endl;
+	// 	std::cout << "\t\t=> 5.2.3.1.1:\t todo->variable_map: " << todo->variable_map << std::endl;
 
-		// ここから
-		variable_map_t vm = todo->variable_map;
-		if (vm.begin() == vm.end())
-			std::cout << "vm is empty." << std::endl;
-		for (auto it = vm.begin(); it!=vm.end(); ++it) {
-			std::cout << "Hey, there." << std::endl;
-			std::cout << "\t" << it->first << "\t: " << it->second << "\n";
-		}
-		// ここまで
+	// 	// ここから
+	// 	variable_map_t vm = todo->variable_map;
+	// 	// if (vm.begin() == vm.end())
+	// 	// 	std::cout << "vm is empty." << std::endl;
+	// 	for (auto it = vm.begin(); it!=vm.end(); ++it) {
+	// 		std::cout << "Hey, there." << std::endl;
+	// 		std::cout << "\t" << it->first << "\t: " << it->second << "\n";
+	// 	}
+	// 	// ここまで
 
-
-
-	}
+	// }
 
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
 	if (phase_list.empty()) {
@@ -148,6 +146,31 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			if (aborting)
 				break;
 		}
+
+	}
+
+	// HOR: this section is for testing the implementations of 卒論研究
+	// ① まずは「各PPでの変数の値」を出力する
+	if (todo->phase_type == POINT_PHASE) { // monotonicity check in every PP
+		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST" << std::endl;
+		std::cout << "\t=> 5.2.3.1.1:\t This is PP " << todo->id << std::endl;
+		// std::cout << "\t=> 5.2.3.1.2:\t todo->unadopted_ms.get_name(): " << todo->unadopted_ms.get_name() << std::endl; // make_next_todo(phase) の後でないと意味を持たない
+		// モデルに登場する全ての変数を出力する。
+		std::cout << "\t=> 5.2.3.1.1:\t all variables in model" << std::endl;
+		for (auto var: *variable_set_)
+			std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << var.get_string() << std::endl;
+		std::cout << "\t=> 5.2.3.1.1:\t value of variable at current phase" << std::endl;
+		std::cout << "\t\t=> 5.2.3.1.1:\t todo->variable_map: " << todo->variable_map << std::endl;
+
+		// ここから
+		variable_map_t vm = todo->variable_map;
+		// if (vm.begin() == vm.end())
+		// 	std::cout << "vm is empty." << std::endl;
+		for (auto it = vm.begin(); it!=vm.end(); ++it) {
+			std::cout << "Hey, there." << std::endl;
+			std::cout << "\t" << it->first << "\t: " << it->second << "\n";
+		}
+		// ここまで
 
 	}
 
