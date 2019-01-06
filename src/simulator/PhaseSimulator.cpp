@@ -135,7 +135,10 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		for (auto var: *variable_set_)
 			std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << var.get_string() << std::endl;
 		std::cout << "\t=> 5.2.3.1.1:\t value of variable at current phase" << std::endl;
-		// 各変数の現フェーズでの値を出力する（process_todo()のどの位置にこれらを置くかで挙動が変化）
+		// 各変数の現フェーズでの値を出力する（process_todo()のどの位置にこれらを置くかで挙動が変化）--fdump_in_progressがこの関数の後だからこのように最後に置いておくのも妥当。
+		// 時刻
+		std::cout << "\t\t=> 5.2.3.1.1:\t variable: t" << "\t: " << todo->current_time << "\n";
+		// 変数
 		variable_map_t vm = todo->variable_map;
 		for (auto it = vm.begin(); it!=vm.end(); ++it) {
 			std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << it->first << "\t: " << it->second << "\n";
