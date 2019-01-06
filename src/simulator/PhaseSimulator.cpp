@@ -78,6 +78,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		}
 		// first IP
 		if (todo->parent->parent == result_root.get()) {
+			// この部分がEliminateNotAlwaysか
 			AlwaysFinder always_finder; // class of simulator/AlwaysFinder.h
 			ConstraintStore non_always;
 			always_set_t always_set;
@@ -104,11 +105,12 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	// ① まずは「各PPでの変数の値」を出力する
 	if (todo->phase_type == POINT_PHASE) { // monotonicity check in every PP
 		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST" << std::endl;
-		std::cout << "\t=> 5.2.3.1.2:\t This is PP" << todo->id << std::endl;
-		std::cout << "\t=> 5.2.3.1.2:\t todo->variable_map: " << todo->variable_map << std::endl;
+		std::cout << "\t=> 5.2.3.1.2:\t This is PP " << todo->id << std::endl;
 		// std::cout << "\t=> 5.2.3.1.2:\t todo->unadopted_ms.get_name(): " << todo->unadopted_ms.get_name() << std::endl; // make_next_todo(phase) の後でないと意味を持たない
+		// モデルに登場する全ての変数を出力する。
 		for (auto var: *variable_set_)
 			std::cout << "\t=> 5.2.3.1.2:\t variable: " << var.get_string() << std::endl;
+		std::cout << "\t=> 5.2.3.1.2:\t todo->variable_map: " << todo->variable_map << std::endl;
 	}
 
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
@@ -569,11 +571,12 @@ void PhaseSimulator::check_break_points(phase_result_sptr_t &phase, variable_map
 	}
 }
 
-void PhaseSimulator::initialize(variable_set_t &v,
-																parameter_map_t &p,
-																variable_map_t &m,
-																module_set_container_sptr &msc,
-																phase_result_sptr_t root)
+void PhaseSimulator::initialize(
+	variable_set_t &v, 
+	parameter_map_t &p, 
+	variable_map_t &m, 
+	module_set_container_sptr &msc, 
+	phase_result_sptr_t root)
 {
 	variable_set_ = &v;
 	parameter_map_ = &p;
@@ -616,8 +619,7 @@ void PhaseSimulator::initialize(variable_set_t &v,
 	value_modifier.reset(new ValueModifier(*backend_));
 }
 
-void PhaseSimulator::replace_prev2parameter(PhaseResult &phase,
-																						variable_map_t &vm)
+void PhaseSimulator::replace_prev2parameter(PhaseResult &phase, variable_map_t &vm)
 {
 	PrevReplacer replacer(*phase.parent, *simulator_, backend_.get(), opts_->affine);
 	for (auto var_entry : vm)
@@ -865,7 +867,16 @@ ValueRange PhaseSimulator::create_range_from_interval(itvd itv)
 	return ValueRange(lower, upper);
 }
 
-find_min_time_result_t PhaseSimulator::find_min_time(const constraint_t &guard, MinTimeCalculator &min_time_calculator, guard_time_map_t &guard_time_map, variable_map_t &original_vm, Value &time_limit, bool entailed, phase_result_sptr_t &phase, std::map<std::string, HistoryData>& atomic_guard_min_time_interval_map)
+find_min_time_result_t PhaseSimulator::find_min_time(
+	const constraint_t &guard, 
+	MinTimeCalculator &min_time_calculator, 
+	guard_time_map_t &guard_time_map, 
+	variable_map_t &original_vm, 
+	Value &time_limit, 
+	bool entailed, 
+	phase_result_sptr_t &phase, 
+	std::map<std::string, 
+	HistoryData>& atomic_guard_min_time_interval_map)
 {
 	if (opts_->step_by_step)
 	{
