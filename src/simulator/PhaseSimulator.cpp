@@ -113,36 +113,36 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << var.get_string() << std::endl;
 		std::cout << "\t=> 5.2.3.1.1:\t value of variable at current phase" << std::endl;
 		std::cout << "\t\t=> 5.2.3.1.1:\t todo->variable_map: " << todo->variable_map << std::endl;
-		variable_map_t vm = result.variable_map;
-	for (auto it = vm.begin(); it!=vm.end(); ++it) {
 
-		// 文字化け
-		if (opts.output_mode != Opts::None)
-		{
-			bool hit = false;
-			for (auto it2 = opts.output_vars.begin(); it2 != opts.output_vars.end(); ++it2)
-			{
-				if (it->first.get_string() == *it2)
-				{
-					hit = true;
-					break;
+		// ここから
+		variable_map_t vm = result.variable_map;
+		for (auto it = vm.begin(); it!=vm.end(); ++it) {
+			// 文字化け
+			if (opts.output_mode != Opts::None) {
+				bool hit = false;
+				for (auto it2 = opts.output_vars.begin(); it2 != opts.output_vars.end(); ++it2) {
+					if (it->first.get_string() == *it2) {
+						hit = true;
+						break;
+					}
+				}
+				switch (opts.output_mode) {
+					case Opts::Omit:
+						if (hit) continue;
+						break;
+					case Opts::Output:
+						if (!hit) continue;
+						break;
+					default :
+						break;
 				}
 			}
-			switch (opts.output_mode)
-			{
-				case Opts::Omit:
-					if (hit) continue;
-					break;
-				case Opts::Output:
-					if (!hit) continue;
-					break;
-				default :
-					break;
-			}
+			stream << "\t" << it->first << "\t: " << it->second << "\n";
 		}
+		// ここまで
 
-		// ここで現在のフェーズでの各変数の値を出力している。
-		stream << "\t" << it->first << "\t: " << it->second << "\n";
+
+
 	}
 
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
