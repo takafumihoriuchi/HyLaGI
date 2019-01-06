@@ -106,7 +106,8 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		std::string var_str = "";
 		for (auto var: *variable_set_)
 			std::cout << "\t=> 5.2.3.1.2:\t variable: " << var.get_string() << std::endl;
-		ostream << get_state_output(todo);
+		// ostream << get_state_output(todo);
+		printer.output_one_phase(todo, "------ TESTING ------");
 	}
 
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
