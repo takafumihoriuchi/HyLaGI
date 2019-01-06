@@ -102,13 +102,16 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		backend_->call("setCurrentTime", true, 1, "vln", "", &todo->current_time);
 
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
+	// todoが空の場合
 	if (phase_list.empty()) {
+		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST @ TODO is EMPTY!!" << std::endl;
 		todo->simulation_state = INCONSISTENCY;
 		todo->set_parameter_constraint(get_current_parameter_constraint());
 		todo->parent->children.push_back(todo);
 	}
+	// todoに要素が入っている場合
 	else {
-		
+		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST @ TODO CONTAINS ELEMENT(s)!!!!" << std::endl;
 		for (auto phase : phase_list) {
 			make_next_todo(phase);
 			// warn against unreferenced variables
@@ -121,8 +124,9 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			if (aborting)
 				break;
 		}
-
 	}
+
+	todo->profile["PhaseResult"] += phase_timer.get_elapsed_us();
 
 	// HOR: this section is for testing the implementations of 卒論研究
 	// ① まずは「各PPでの変数の値」を出力する
@@ -146,7 +150,6 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 
 	}
 
-	todo->profile["PhaseResult"] += phase_timer.get_elapsed_us();
 	return phase_list;
 }
 
