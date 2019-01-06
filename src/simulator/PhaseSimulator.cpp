@@ -166,7 +166,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// if (vm.begin() == vm.end())
 		// 	std::cout << "vm is empty." << std::endl;
 		for (auto it = vm.begin(); it!=vm.end(); ++it) {
-			std::cout << "\t\t" << it->first << ": " << it->second << "\n";
+			std::cout << "\t\t" << it->first << "\t:\t" << it->second << "\n";
 		}
 		// ここまで
 
