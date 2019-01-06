@@ -103,6 +103,13 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	// HOR: this section is for testing
 	if (todo->phase_type == POINT_PHASE) { // monotonicity check in every PP
 		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST" << std::endl;
+		// testing to show all variables
+		for (auto phase : phase_list) {
+			// make_next_todo(phase);
+			std::string var_str = "";
+			for (auto var: *variable_set_)
+				std::cout << "=> 5.2.3.1.2:\t variable: " << var.get_string() << std::endl;
+		}
 	}
 
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
