@@ -104,7 +104,8 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	if (todo->phase_type == POINT_PHASE) { // monotonicity check in every PP
 		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST" << std::endl;
 		std::cout << "\t=> 5.2.3.1.2:\t todo->id: " << todo->id << std::endl;
-		std::cout << "\t=> 5.2.3.1.2:\t todo->unadopted_ms.get_name(): " << todo->unadopted_ms.get_name() << std::endl;
+		std::cout << "\t=> 5.2.3.1.2:\t todo->id: " << todo->variable_map.begin()->first << std::endl;
+		// std::cout << "\t=> 5.2.3.1.2:\t todo->unadopted_ms.get_name(): " << todo->unadopted_ms.get_name() << std::endl; // make_next_todo(phase) の後でないと意味を持たない
 		for (auto var: *variable_set_)
 			std::cout << "\t=> 5.2.3.1.2:\t variable: " << var.get_string() << std::endl;
 	}
@@ -132,15 +133,6 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 
 	}
 
-	// HOR: this section is for testing
-	if (todo->phase_type == POINT_PHASE) { // monotonicity check in every PP
-		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST" << std::endl;
-		std::cout << "\t=> 5.2.3.1.2:\t todo->id: " << todo->id << std::endl;
-		std::cout << "\t=> 5.2.3.1.2:\t todo->unadopted_ms.get_name(): " << todo->unadopted_ms.get_name() << std::endl;
-		for (auto var: *variable_set_)
-			std::cout << "\t=> 5.2.3.1.2:\t variable: " << var.get_string() << std::endl;
-	}
-	
 	todo->profile["PhaseResult"] += phase_timer.get_elapsed_us();
 	return phase_list;
 }
