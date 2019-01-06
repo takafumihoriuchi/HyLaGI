@@ -138,7 +138,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// 各変数の現フェーズでの値を出力する（process_todo()のどの位置にこれらを置くかで挙動が変化）
 		variable_map_t vm = todo->variable_map;
 		for (auto it = vm.begin(); it!=vm.end(); ++it) {
-			std::cout << "\t\t" << it->first << "\t:\t" << it->second << "\n";
+			std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << it->first << "\t: " << it->second << "\n";
 		}
 
 	}
