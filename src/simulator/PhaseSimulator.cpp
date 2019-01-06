@@ -55,6 +55,7 @@ PhaseSimulator::PhaseSimulator(Simulator* simulator,const Opts& opts)
 PhaseSimulator::~PhaseSimulator() {}
 // デストラクタは何もしない
 
+// この関数がフェーズ毎の処理を司っている
 phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 {
 	std::cout << "=> 5.2.3.1.0:\t in process_todo()" << std::endl;
@@ -64,36 +65,31 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	todo->inconsistent_constraints.clear();
 	aborting = false;
 
-	if (todo->parent == result_root.get()) {
-		// first PP phase
+	if (todo->parent == result_root.get()) { // first PP
 		for (auto module : module_set_container->get_max_module_set()) {
 			relation_graph_->set_expanded_recursive(module.second, true);
 		}
 		todo->diff_sum.add_constraint_store(relation_graph_->get_constraints());
-	} else {
-		// this is NOT the first PP phase
-		if (todo->phase_type == INTERVAL_PHASE) {
-			// this is an IP phase
+	} else { // this is NOT the first PP
+		if (todo->phase_type == INTERVAL_PHASE) { // this is an IP
 			todo->set_parameter_constraint(todo->parent->get_parameter_constraint());
 		}
-		if (todo->parent->parent == result_root.get()) {
-			// remove constraints without always at first interval phase
-			std::cout << "=> 5.2.3.1.3:\t removing constraints without always (at only the first interval phase)" << std::endl;
-			AlwaysFinder always_finder;
+		if (todo->parent->parent == result_root.get()) { // first IP
+			AlwaysFinder always_finder; // class of simulator/AlwaysFinder.h
 			ConstraintStore non_always;
 			always_set_t always_set;
 			asks_t diff_positives = todo->parent->get_diff_positive_asks();
 			asks_t nonalways_asks;
 			for (auto module : module_set_container->get_max_module_set())
-			{
 				always_finder.find_always(module.second, &always_set, &non_always, &diff_positives, &nonalways_asks);
-			}
-			for (auto constraint : non_always)relation_graph_->set_expanded_atomic(constraint, false);
-			for (auto ask : nonalways_asks)relation_graph_->set_expanded_atomic(ask, false);
+			for (auto constraint : non_always)
+				relation_graph_->set_expanded_atomic(constraint, false);
+			for (auto ask : nonalways_asks)
+				relation_graph_->set_expanded_atomic(ask, false);
 		}
 
-		if (todo->phase_type == INTERVAL_PHASE)
-		{
+		if (todo->phase_type == INTERVAL_PHASE) {
+			std::cout << "=> 5.2.3.1.1:\t this is an IP" << std::endl;
 			todo->prev_map = todo->parent->variable_map;
 		}
 	}
