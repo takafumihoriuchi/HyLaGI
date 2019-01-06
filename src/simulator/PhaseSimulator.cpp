@@ -105,12 +105,14 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	// ① まずは「各PPでの変数の値」を出力する
 	if (todo->phase_type == POINT_PHASE) { // monotonicity check in every PP
 		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST" << std::endl;
-		std::cout << "\t=> 5.2.3.1.2:\t This is PP " << todo->id << std::endl;
+		std::cout << "\t=> 5.2.3.1.1:\t This is PP " << todo->id << std::endl;
 		// std::cout << "\t=> 5.2.3.1.2:\t todo->unadopted_ms.get_name(): " << todo->unadopted_ms.get_name() << std::endl; // make_next_todo(phase) の後でないと意味を持たない
 		// モデルに登場する全ての変数を出力する。
+		std::cout << "\t=> 5.2.3.1.1:\t all variables in model" << std::endl;
 		for (auto var: *variable_set_)
-			std::cout << "\t=> 5.2.3.1.2:\t variable: " << var.get_string() << std::endl;
-		std::cout << "\t=> 5.2.3.1.2:\t todo->variable_map: " << todo->variable_map << std::endl;
+			std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << var.get_string() << std::endl;
+		std::cout << "\t=> 5.2.3.1.1:\t value of variable at current phase" << std::endl;
+		std::cout << "\t\t=> 5.2.3.1.1:\t todo->variable_map: " << todo->variable_map << std::endl;
 	}
 
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
