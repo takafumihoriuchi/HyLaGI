@@ -160,15 +160,13 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		for (auto var: *variable_set_)
 			std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << var.get_string() << std::endl;
 		std::cout << "\t=> 5.2.3.1.1:\t value of variable at current phase" << std::endl;
-		std::cout << "\t\t=> 5.2.3.1.1:\t todo->variable_map: " << todo->variable_map << std::endl;
 
 		// ここから
 		variable_map_t vm = todo->variable_map;
 		// if (vm.begin() == vm.end())
 		// 	std::cout << "vm is empty." << std::endl;
 		for (auto it = vm.begin(); it!=vm.end(); ++it) {
-			std::cout << "Hey, there." << std::endl;
-			std::cout << "\t" << it->first << "\t: " << it->second << "\n";
+			std::cout << "\t\t" << it->first << ": " << it->second << "\n";
 		}
 		// ここまで
 
