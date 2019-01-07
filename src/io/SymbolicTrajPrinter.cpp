@@ -71,7 +71,7 @@ void SymbolicTrajPrinter::output_asks(std::ostream &stream, const phase_result_t
 	bool first = true;
 	for (auto ask : phase.get_diff_positive_asks())
 	{
-		if (!first)stream << "\n\t\t  ";
+		if (!first)stream << "\n\t\t  "; // 一個 出力する毎に改行
 		stream << get_infix_string(ask);
 		first = false;
 	}

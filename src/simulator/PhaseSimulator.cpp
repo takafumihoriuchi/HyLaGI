@@ -102,6 +102,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		backend_->call("setCurrentTime", true, 1, "vln", "", &todo->current_time);
 
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
+	
 	// todoが空の場合
 	if (phase_list.empty()) {
 		std::cout << "=> 5.2.3.1.1:\t phase_list does not contain any element: " << phase_list.size() << std::endl;
@@ -146,7 +147,10 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << it->first << "\t: " << it->second << "\n";
 		}
 		// ② 次は「全てのガード条件」を出力する
-
+		std::cout << "\t=> 5.2.3.1.1:\t all the guards in model" << std::endl;
+		for (auto ask : todo->get_diff_positive_asks()) {
+			std::cout << "\t\t=> 5.2.3.1.1:\t guards: " << get_infix_string(ask) << "\n";
+		}
 		// ③ その後「変数x」に関するガードだけを抜き出す
 		// ... ④ 現在のxの値との比較（ガードの判定を行なっているコードを参考にする）
 	}
