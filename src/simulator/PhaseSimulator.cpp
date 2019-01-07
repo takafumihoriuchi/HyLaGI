@@ -135,7 +135,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST" << std::endl;
 		std::cout << "\t=> 5.2.3.1.1:\t This is PP " << todo->id << std::endl;
 		
-		// ① まずは「各PPでの変数の値」を出力する
+		// ① まずは「各PPでの変数の値」を出力してみる
 		std::cout << "\t=> 5.2.3.1.1:\t all variables in model" << std::endl;
 		for (auto var: *variable_set_)
 			std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << var.get_string() << std::endl;
@@ -150,11 +150,21 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		}
 
 		// ② 次は「全てのガード条件」を出力する	
+		// std::cout << "\t=> 5.2.3.1.1:\t all the guards in model" << std::endl;
+		// for (auto ask : relation_graph_->get_all_asks()) {
+		// 	std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
+		// }
+
+		// tmp
 		std::cout << "\t=> 5.2.3.1.1:\t all the guards in model" << std::endl;
 		for (auto ask : relation_graph_->get_all_asks()) {
 			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
+			for (auto var : relation_graph_->get_adjacent_variables(ask)) {
+				std::out << "\t\t\t\t=> 5.2.3.1.2:\t variable: " << var << "\n";
+			}
 		}
 
+		// 次の方法でもできる
 		// std::cout << "\t\t=> 5.2.3.1.1:\t positive asks" << std::endl; // PPで出現
 		// for (auto ask : todo->get_all_positive_asks()) { // askとは、条件付き制約の前件と後件をまとめたもの
 		// 	std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
@@ -170,8 +180,8 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// つまり、自分でC++コードを書いて数式処理をする
 
 		// ⑤ 単調性により成立しなくなったガードを削除する（* 削除するのか、参照しないように印を付けるのか）
-		// => 指定したaskとconstrain_nodeを結びつける
-		
+		// => 指定したaskとconstraint_nodeを結びつける
+
 		// => 対象のconstraint_nodeを削除する
 
 	}
