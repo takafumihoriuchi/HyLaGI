@@ -148,24 +148,14 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		}
 		// ② 次は「全てのガード条件」を出力する
 		
-		// std::cout << "\t=> 5.2.3.1.1:\t all the guards in model" << std::endl;
-		// std::cout << "\t\t=> 5.2.3.1.1:\t positive asks" << std::endl; // PPで出現
-		// for (auto ask : todo->get_diff_positive_asks()) { // askは前件と後件をまとめたもの
-		// 	std::cout << "\t\t\t=> 5.2.3.1.1:\t ask: " << get_infix_string(ask) << "\n";
-		// }
-		// std::cout << "\t\t=> 5.2.3.1.1:\t negative asks" << std::endl; // IPで出現
-		// for (auto ask : todo->get_diff_negative_asks()) {
-		// 	std::cout << "\t\t\t=> 5.2.3.1.1:\t ask: " << get_infix_string(ask) << "\n";
-		// }
-
 		std::cout << "\t=> 5.2.3.1.1:\t all the guards in model" << std::endl;
 		std::cout << "\t\t=> 5.2.3.1.1:\t positive asks" << std::endl; // PPで出現
-		for (auto guard : todo->get_all_positive_guards()) { // askは前件と後件をまとめたもの
-			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << guard << "\n";
+		for (auto ask : todo->get_diff_positive_asks()) { // askは前件と後件をまとめたもの
+			std::cout << "\t\t\t=> 5.2.3.1.1:\t ask: " << get_infix_string(ask->get_guard()) << "\n";
 		}
-		std::cout << "\t\t=> 5.2.3.1.1:\t negative guards" << std::endl; // IPで出現
-		for (auto guard : todo->get_all_negative_guards()) {
-			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << guard << "\n";
+		std::cout << "\t\t=> 5.2.3.1.1:\t negative asks" << std::endl; // IPで出現
+		for (auto ask : todo->get_diff_negative_asks()) {
+			std::cout << "\t\t\t=> 5.2.3.1.1:\t ask: " << get_infix_string(ask->get_guard()) << "\n";
 		}
 		
 		// ③ その後「変数x」に関するガードだけを抜き出す
