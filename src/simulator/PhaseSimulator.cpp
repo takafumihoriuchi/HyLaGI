@@ -104,14 +104,14 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
 	// todoが空の場合
 	if (phase_list.empty()) {
-		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST @ TODO is EMPTY!! => " << phase_list.size() << std::endl;
+		std::cout << "=> 5.2.3.1.1:\t phase_list does not contain any element: " << phase_list.size() << std::endl;
 		todo->simulation_state = INCONSISTENCY;
 		todo->set_parameter_constraint(get_current_parameter_constraint());
 		todo->parent->children.push_back(todo);
 	}
 	// todoに要素が入っている場合
 	else {
-		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST @ TODO CONTAINS ELEMENT(s)!!!! => " << phase_list.size() << std::endl;
+		std::cout << "=> 5.2.3.1.1:\t phase_list contains " << phase_list.size() << " elements" << std::endl;
 		for (auto phase : phase_list) {
 			make_next_todo(phase);
 			// warn against unreferenced variables
@@ -129,25 +129,26 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	todo->profile["PhaseResult"] += phase_timer.get_elapsed_us();
 
 	// HOR: this section is for testing the implementations of 卒論研究
-	// ① まずは「各PPでの変数の値」を出力する
 	if (todo->phase_type == POINT_PHASE) { // monotonicity check in every PP
 		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST" << std::endl;
 		std::cout << "\t=> 5.2.3.1.1:\t This is PP " << todo->id << std::endl;
-		// std::cout << "\t=> 5.2.3.1.2:\t todo->unadopted_ms.get_name(): " << todo->unadopted_ms.get_name() << std::endl; // make_next_todo(phase) の後でないと意味を持たない
-		// モデルに登場する全ての変数を出力する。
+		// ① まずは「各PPでの変数の値」を出力する
 		std::cout << "\t=> 5.2.3.1.1:\t all variables in model" << std::endl;
 		for (auto var: *variable_set_)
 			std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << var.get_string() << std::endl;
 		std::cout << "\t=> 5.2.3.1.1:\t value of variable at current phase" << std::endl;
 		// 各変数の現フェーズでの値を出力する（process_todo()のどの位置にこれらを置くかで挙動が変化）--fdump_in_progressがこの関数の後だからこのように最後に置いておくのも妥当。
-		// 時刻
+		// 時刻の値
 		std::cout << "\t\t=> 5.2.3.1.1:\t variable: t" << "\t: " << todo->current_time << "\n";
-		// 変数
+		// 変数の値
 		variable_map_t vm = todo->variable_map;
 		for (auto it = vm.begin(); it!=vm.end(); ++it) {
 			std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << it->first << "\t: " << it->second << "\n";
 		}
+		// ② 次は「全てのガード条件」を出力する
 
+		// ③ その後「変数x」に関するガードだけを抜き出す
+		// ... ④ 現在のxの値との比較（ガードの判定を行なっているコードを参考にする）
 	}
 
 	return phase_list;
