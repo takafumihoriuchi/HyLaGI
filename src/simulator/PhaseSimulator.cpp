@@ -156,8 +156,8 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// }
 
 		std::cout << "\t=> 5.2.3.1.1:\t all the guards in model" << std::endl;
-		for (auto ask : relation_graph_->guard_nodes) {
-			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
+		for (auto guard : relation_graph_->guard_nodes) {
+			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(guard) << "\n";
 		}
 
 		// std::cout << "\t\t=> 5.2.3.1.1:\t positive asks" << std::endl; // PPで出現
