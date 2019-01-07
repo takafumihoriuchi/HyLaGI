@@ -58,15 +58,14 @@ void dump_tell_node(TellNode *node, ostream &os)
 {
 	string constraint_name = node->get_name();
 	os << " \"" << constraint_name << "\" [shape = box]\n";
-	for(auto edge : node->edges){
+	for (auto edge : node->edges) {
 		string variable_name = edge.variable_node->get_name();
 		os << "  \"" 
-			 << constraint_name 
-			 << "\" -> \"" 
-			 << variable_name 
-			 << "\"[dir = none]";
-		if(edge.ref_prev)
-		{
+		   << constraint_name 
+		   << "\" -> \"" 
+		   << variable_name 
+		   << "\"[dir = none]";
+		if (edge.ref_prev) {
 			os << " [style = dashed]";
 		}
 		os <<  ";\n";
@@ -77,27 +76,27 @@ void dump_tell_node(TellNode *node, ostream &os)
 void dump_ask_node(AskNode *node, ostream &os)
 {
 	string constraint_name = " \"" + node->get_name() + "\"";
-	if(node->prev) os <<  constraint_name << " [shape = hexagon, style = dashed]\n";
-	else os << constraint_name << " [shape = hexagon]\n";
-	for(auto edge : node->edges){
+	if (node->prev)
+		os <<  constraint_name << " [shape = hexagon, style = dashed]\n";
+	else
+		os << constraint_name << " [shape = hexagon]\n";
+	for (auto edge : node->edges) {
 		string variable_name = edge.variable_node->get_name();
 		os << constraint_name 
-			 << " -> \"" 
-			 << variable_name 
-			 << "\" [dir = none]";
-		if(edge.ref_prev)
-		{
+		   << " -> \"" 
+		   << variable_name 
+		   << "\" [dir = none]";
+		if (edge.ref_prev) {
 			os << " [style = dashed]";
 		}
 		os <<  ";\n";
 	}
-	for(auto child : node->children)
-	{
+	for (auto child : node->children) {
 		os << constraint_name
-			 << " -> \""
-			 << child->get_name()
-			// arrowtail is not displayed if dir != both
-			 << "\" [dir = both, arrowtail = odot]; \n";
+		   << " -> \""
+		   << child->get_name()
+		   // arrowtail is not displayed if dir != both
+		   << "\" [dir = both, arrowtail = odot]; \n";
 	}
 }
 
@@ -105,16 +104,13 @@ void RelationGraph::dump_graph(ostream & os, DumpMode mode) const
 {
 	os << "digraph g {\n";
 	os << "graph [ranksep = 2.0 ,rankdir = LR];\n";
-	if(mode != ASK_ONLY)
-	{
+	if (mode != ASK_ONLY) {
 		for(auto tell_node : tell_nodes) {
 			dump_tell_node(tell_node, os);
 		}
 	}
-
-	if(mode != TELL_ONLY)
-	{
-		for(auto ask_node : ask_nodes) {
+	if (mode != TELL_ONLY) {
+		for (auto ask_node : ask_nodes) {
 			dump_ask_node(ask_node, os);
 		}
 	}
@@ -126,15 +122,13 @@ void RelationGraph::dump_active_graph(ostream & os, DumpMode mode) const
 {
 	os << "digraph g {" << endl;
 	os << "graph [ranksep = 2.0 ,rankdir = LR];" << endl;
-	if(mode != ASK_ONLY)
-	{
-		for(auto tell_node : tell_nodes) {
+	if (mode != ASK_ONLY) {
+		for (auto tell_node : tell_nodes) {
 			if(tell_node->is_active()) dump_tell_node(tell_node, os);
 		}
 	}
-	if(mode != TELL_ONLY)
-	{
-		for(auto ask_node : ask_nodes) {
+	if(mode != TELL_ONLY) {
+		for (auto ask_node : ask_nodes) {
 			if(ask_node->is_active()) dump_ask_node(ask_node, os);
 		}
 	}
@@ -159,8 +153,7 @@ string get_constraint_name(const constraint_t &constraint, const module_t &modul
 	string ret = symbolic_expression::get_infix_string(constraint);
 	// if too long, cut latter part
 	const string::size_type max_length = 10;
-	if(ret.length() > max_length)
-	{
+	if (ret.length() > max_length) {
 		ret = ret.substr(0, max_length) + ("...");
 	}
 	return ret + " (" + module.first + ")";
@@ -185,18 +178,22 @@ bool ConstraintNode::is_active() const
 bool RelationGraph::referring(const Variable& var)
 {
 	auto var_it = variable_node_map.find(var);
-	if(var_it == variable_node_map.end())return false;
+	// 見つからずに最後まで来てしまった場合
+	if (var_it == variable_node_map.end())
+		return false;
+	
 	VariableNode *var_node = var_it->second;
-	for(auto edge : var_node->edges)
-	{
-		if(edge.tell_node->is_active())return true;
+	for (auto edge : var_node->edges) {
+		if (edge.tell_node->is_active())
+			return true;
 	}
+
 	return false;
 }
 
 void RelationGraph::initialize_node_collected()
 {
-	for(auto tell_node : tell_nodes){
+	for (auto tell_node : tell_nodes) {
 		tell_node->collected = false;
 	}
 }
@@ -206,21 +203,18 @@ void RelationGraph::get_related_constraints_vector(const ConstraintStore &constr
 	constraints_vector.clear();
 	module_set_vector.clear();
 
-	for(auto constraint : constraint_store)
-	{
+	for (auto constraint : constraint_store) {
 		auto constraint_it = tell_node_map.find(constraint);
-		if(constraint_it == tell_node_map.end())
-		{
+		if (constraint_it == tell_node_map.end()) {
 			VariableFinder finder;
 			finder.visit_node(constraint);
 			variable_set_t variables;
 			variables = finder.get_all_variable_set();
-			for(auto base_variable : variables)
-			{
-				for(int i = 0; i <= base_variable.get_differential_count(); i++)
-				{
+			for(auto base_variable : variables) {
+				for (int i = 0; i <= base_variable.get_differential_count(); i++) {
 					Variable variable(base_variable.get_name(), i);
-					if(!variable_node_map.count(variable))continue;
+					if (!variable_node_map.count(variable))
+						continue;
 					ConstraintStore connected_constraints;
 					module_set_t connected_ms;
 					VariableNode *var_node = variable_node_map[variable];
