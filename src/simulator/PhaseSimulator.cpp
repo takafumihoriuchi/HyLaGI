@@ -160,7 +160,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		for (auto ask : relation_graph_->get_all_asks()) {
 			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
 			for (auto var : relation_graph_->get_adjacent_variables(ask)) {
-				std::out << "\t\t\t\t=> 5.2.3.1.2:\t variable: " << var << "\n";
+				std::cout << "\t\t\t\t=> 5.2.3.1.2:\t variable: " << var << "\n";
 			}
 		}
 
