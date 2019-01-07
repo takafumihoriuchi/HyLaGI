@@ -149,16 +149,17 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// ② 次は「全てのガード条件」を出力する	
 		std::cout << "\t=> 5.2.3.1.1:\t all the guards in model" << std::endl;
 		std::cout << "\t\t=> 5.2.3.1.1:\t positive asks" << std::endl; // PPで出現
-		for (auto ask : todo->get_all_positive_asks()) { // askは前件と後件をまとめたもの
+		for (auto ask : todo->get_all_positive_asks()) { // askとは、条件付き制約の前件と後件をまとめたもの
 			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
-		}
+		} // 全てのaskはpositiveとnegativeに分類される
 		std::cout << "\t\t=> 5.2.3.1.1:\t negative asks" << std::endl; // IPで出現
 		for (auto ask : todo->get_all_negative_asks()) {
 			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
 		}
-		
-		// ③ その後「変数x」に関するガードだけを抜き出す
-		// ... ④ 現在のxの値との比較（ガードの判定を行なっているコードを参考にする）
+		// ③ 「変数x（ユーザー指定）」に関するガードだけを抜き出す
+		// ④ 現在のxの値との比較（ガードの判定を行なっているコードを参考にする）
+
+		// ⑤ 単調性により成立しなくなったガードを削除する（* 削除するのか、参照しないように印を付けるのか）
 	}
 
 	return phase_list;
@@ -900,14 +901,16 @@ find_min_time_result_t PhaseSimulator::find_min_time(
 	bool entailed, 
 	phase_result_sptr_t &phase, 
 	std::map<std::string, 
-	HistoryData>& atomic_guard_min_time_interval_map)
-{
-	if (opts_->step_by_step)
-	{
+	HistoryData>& atomic_guard_min_time_interval_map
+) {
+	// オプションで指定した場合のみ
+	if (opts_->step_by_step) {
 		return find_min_time_step_by_step(guard, original_vm, time_limit, phase, entailed, atomic_guard_min_time_interval_map);
 	}
 
 	auto detail = logger::Detail(__FUNCTION__);
+
+	std::cout << "============== THIS IS FIND_MIN_TIME() ==============" << std::endl;
 
 	HYDLA_LOGGER_DEBUG_VAR(get_infix_string(guard));
 	std::list<AtomicConstraint *> guards = relation_graph_->get_atomic_guards(guard);

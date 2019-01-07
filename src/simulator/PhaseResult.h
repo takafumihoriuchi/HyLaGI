@@ -171,7 +171,7 @@ public:
   PhaseResult();  
   ~PhaseResult();
 
-  asks_t                    get_diff_positive_asks()const;
+  asks_t                    get_diff_positive_asks()const; // 「diff」は「difference」のdiff。つまり、差分のみを取得する。
   asks_t                    get_diff_negative_asks()const;
   void                      add_diff_positive_asks(const asks_t &asks);
   void                      add_diff_negative_asks(const asks_t &asks);
