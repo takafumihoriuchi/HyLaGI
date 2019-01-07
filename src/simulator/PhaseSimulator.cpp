@@ -152,7 +152,8 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// ② 次は「全てのガード条件」を出力する	
 		std::cout << "\t=> 5.2.3.1.1:\t all the guards in model" << std::endl;
 		for (auto ask : relation_graph_->get_all_asks()) {
-			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
+			// std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
+			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_constraint_name(ask->get_guard()) << "\n";
 		}
 
 		// std::cout << "\t\t=> 5.2.3.1.1:\t positive asks" << std::endl; // PPで出現
