@@ -81,8 +81,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 		current->todo_list.pop_front();
 		profile_vector_->insert(todo);
 
-		if (todo->simulation_state == NOT_SIMULATED)
-		{
+		if (todo->simulation_state == NOT_SIMULATED) {
 			std::cout << "=> 5.2.3:\t calling process_one_todo()" << std::endl;
 			process_one_todo(todo); // ここからSimulator.cppの関数に飛ぶ
 			// --fdump_in_progressの時には実行される
@@ -104,7 +103,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 	phase_simulator_->revert_diff(*current);
 }
 
-// omit：省く
+// omit=省く
 void SequentialSimulator::omit_following_todos(phase_result_sptr_t current)
 {
 	while (!current->todo_list.empty())

@@ -79,13 +79,14 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// first IP
 		if (todo->parent->parent == result_root.get()) {
 			// この部分がEliminateNotAlwaysか
-			AlwaysFinder always_finder; // class of simulator/AlwaysFinder.h
+			AlwaysFinder always_finder; // Class in simulator/AlwaysFinder.h
 			ConstraintStore non_always;
 			always_set_t always_set;
 			asks_t diff_positives = todo->parent->get_diff_positive_asks();
 			asks_t nonalways_asks;
 			for (auto module : module_set_container->get_max_module_set())
 				always_finder.find_always(module.second, &always_set, &non_always, &diff_positives, &nonalways_asks);
+			// atomic constraint: constraints that contains only one relational operators (=, <, >, <=, >=)
 			for (auto constraint : non_always)
 				relation_graph_->set_expanded_atomic(constraint, false);
 			for (auto ask : nonalways_asks)
@@ -133,6 +134,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	if (todo->phase_type == POINT_PHASE) { // monotonicity check in every PP
 		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST" << std::endl;
 		std::cout << "\t=> 5.2.3.1.1:\t This is PP " << todo->id << std::endl;
+		
 		// ① まずは「各PPでの変数の値」を出力する
 		std::cout << "\t=> 5.2.3.1.1:\t all variables in model" << std::endl;
 		for (auto var: *variable_set_)
@@ -146,8 +148,18 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		for (auto it = vm.begin(); it!=vm.end(); ++it) {
 			std::cout << "\t\t=> 5.2.3.1.1:\t variable: " << it->first << "\t: " << it->second << "\n";
 		}
-		// // ② 次は「全てのガード条件」を出力する	
+
+		// ② 次は「全てのガード条件」を出力する	
 		// std::cout << "\t=> 5.2.3.1.1:\t all the guards in model" << std::endl;
+		// for (auto ask : relation_graph_->get_all_asks()) {
+		// 	std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
+		// }
+
+		std::cout << "\t=> 5.2.3.1.1:\t all the guards in model" << std::endl;
+		for (auto ask : relation_graph_->guard_nodes) {
+			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
+		}
+
 		// std::cout << "\t\t=> 5.2.3.1.1:\t positive asks" << std::endl; // PPで出現
 		// for (auto ask : todo->get_all_positive_asks()) { // askとは、条件付き制約の前件と後件をまとめたもの
 		// 	std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
@@ -157,16 +169,17 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// 	std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
 		// }
 
-		std::cout << "\t=> 5.2.3.1.1:\t all the guards in model" << std::endl;
-		for (auto ask : relation_graph_->get_all_asks()) {
-			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
-		}
-
+		// これらの処理は、既存コードの再利用ができれば良いが、力づくでできないこともない。
 		// ③ 「変数x（ユーザー指定）」に関するガードだけを抜き出す
 		// ④ 現在のxの値との比較（ガードの判定を行なっているコードを参考にする）
+		// つまり、自分でC++コードを書いて数式処理をする
 
 		// ⑤ 単調性により成立しなくなったガードを削除する（* 削除するのか、参照しないように印を付けるのか）
+		// => 指定したaskとconstrain_nodeを結びつける
+		// => 対象のconstraint_nodeを削除する
+
 	}
+	// ここまで編集した
 
 	return phase_list;
 }
@@ -1698,38 +1711,32 @@ void PhaseSimulator::make_next_todo(phase_result_sptr_t& phase)
 			set<ask_t> asks;
 			if (phase->parent->parent == result_root.get()) {
 				asks = relation_graph_->get_all_asks();
-			}
-			else
-			{
+			} else {
 				set<string> checked_variables;
-				for (auto variable : diff_variables)
-				{
+				for (auto variable : diff_variables) {
 					string var_name = variable.get_name();
 					// 既にチェック済みの変数なら省略（x'とxはどちらもxとして扱うため，二回呼ばれないようにする）
-					if (checked_variables.count(var_name)) continue;
+					if (checked_variables.count(var_name))
+						continue;
 					checked_variables.insert(var_name);
 					asks_t tmp_asks = relation_graph_->get_adjacent_asks(var_name);
 					asks.insert(tmp_asks.begin(), tmp_asks.end());
 				}
-				for (auto entry : phase->discrete_asks)
-				{
+				for (auto entry : phase->discrete_asks) {
 					asks.insert(entry.first);
 				}
 			}
 			std::map<std::string, HistoryData> atomic_guard_min_time_interval_map;
 			timer::Timer find_min_time_timer;
-			if (opts_->interval && !max_time.infinite())
-			{
+			if (opts_->interval && !max_time.infinite()) {
 				upper_bound_of_itv_newton = evaluate_interval(phase, max_time - phase->current_time, false).upper();
 			}
 
-			for (auto ask : asks)
-			{
+			for (auto ask : asks) {
 				candidate_map[ask] = find_min_time(ask->get_guard(), min_time_calculator, guard_time_map, original_vm, time_limit, relation_graph_->get_entailed(ask), phase, atomic_guard_min_time_interval_map);
 			}
 
-			for (auto &entry : break_point_list)
-			{
+			for (auto &entry : break_point_list) {
 				auto break_point = entry.first;
 				entry.second = find_min_time(break_point.condition, min_time_calculator, guard_time_map, original_vm, time_limit, false, phase, atomic_guard_min_time_interval_map);
 			}
@@ -1737,115 +1744,90 @@ void PhaseSimulator::make_next_todo(phase_result_sptr_t& phase)
 			pp_time_result_t time_result;
 			// 各askに関する最小時刻を比較して最小のものを選ぶ．
 			timer::Timer compare_min_time_timer;
-			for (auto entry : candidate_map)
-			{
+			for (auto entry : candidate_map) {
 				time_result = compare_min_time(time_result, entry.second, entry.first);
-				for (auto candidate : entry.second)
-				{
+				for (auto candidate : entry.second) {
 					HYDLA_LOGGER_DEBUG_VAR(candidate.time);
 				}
 			}
-			for (auto entry : break_point_list)
-			{
+			for (auto entry : break_point_list) {
 				ask_t null_ask;
 				time_result = compare_min_time(time_result, entry.second, null_ask);
 			}
 			phase->profile["CompareMinTime"] += compare_min_time_timer.get_elapsed_us();
 
-			if (time_result.empty())
-			{
+			if (time_result.empty()) {
 				phase->simulation_state = simulator::TIME_LIMIT;
 				phase->end_time = max_time;
-			}
-			else
-			{
+			} else {
 				auto time_it = time_result.begin();
-				while (true)
-				{
+				while (true) {
 					DCCandidate &candidate = *time_it;
 					phase->set_parameter_constraint(candidate.parameter_constraint);
 					phase->end_time = phase->current_time + candidate.time;
 					backend_->call("simplify", false, 1, "vln", "vl", &phase->end_time, &phase->end_time);
-					if (candidate.time.undefined() || candidate.time.infinite())
-					{
+					if (candidate.time.undefined() || candidate.time.infinite()) {
 						phase->simulation_state = TIME_LIMIT;
 						phase->end_time = max_time;
-					}
-					else
-					{
+					} else {
 						next_todo->id = ++phase_sum_;
 						next_todo->discrete_asks = candidate.discrete_asks;
-						if (opts_->interval) 
-						{
+						if (opts_->interval)  {
 							// verify the time of the next discrete change
-							if (evaluate_interval(phase, value_t(upper_bound_of_itv_newton) - candidate.time, false).lower() < 0)
-							{
+							if (evaluate_interval(phase, value_t(upper_bound_of_itv_newton) - candidate.time, false).lower() < 0) {
 								string asks_str = "";
-								for (auto discrete_ask : next_todo->discrete_asks)
-								{
+								for (auto discrete_ask : next_todo->discrete_asks) {
 									asks_str += get_infix_string(discrete_ask.first);
 								}
 								throw HYDLA_ERROR("failed to calculate valid time of the discrete change for " + asks_str);
 							}
 						}
-						if (opts_->step_by_step)
-						{
-							for (auto discrete_ask : next_todo->discrete_asks)
-							{
+						// オプションで指定された場合のみ実行
+						if (opts_->step_by_step) {
+							for (auto discrete_ask : next_todo->discrete_asks) {
 								find_min_time_result_t &f_result = candidate_map[discrete_ask.first];
-								if (opts_->epsilon_mode >= 0)f_result = reduce_unsuitable_case(f_result, backend_.get(), phase);
+								if (opts_->epsilon_mode >= 0)
+									f_result = reduce_unsuitable_case(f_result, backend_.get(), phase);
 								HYDLA_ASSERT(f_result.size() == 1);
 								HYDLA_LOGGER_DEBUG_VAR(f_result.front().discrete_guards.size());
-								for (auto guard : f_result.front().discrete_guards)
-								{
+								for (auto guard : f_result.front().discrete_guards) {
 									next_todo->discrete_guards.insert(guard); 
 								}
 							}
-						}
-						else if (opts_->interval || opts_->numerize_mode || opts_->epsilon_mode > 0)
-						{
+						} else if (opts_->interval || opts_->numerize_mode || opts_->epsilon_mode > 0) {
 							// calculate discrete_guards
-							for (auto discrete_ask : next_todo->discrete_asks)
-							{
+							for (auto discrete_ask : next_todo->discrete_asks) {
 								find_min_time_result_t &f_result = candidate_map[discrete_ask.first];
 								bool included_by_newton_guard = false;
 
-								if (opts_->epsilon_mode >= 0)
-								{
-									for (auto entry : time_result)
-									{
+								if (opts_->epsilon_mode >= 0) {
+									for (auto entry : time_result) {
 										HYDLA_LOGGER_DEBUG("#epsilon DC before : ", entry.parameter_constraint);
 									}
 									f_result = reduce_unsuitable_case(f_result, backend_.get(), phase);
-									for (auto entry : time_result)
-									{
+									for (auto entry : time_result) {
 										HYDLA_LOGGER_DEBUG("#epsilon DC after : ", entry.parameter_constraint);
 									}
 								}
 
 								HYDLA_ASSERT(f_result.size() == 1);
 								FindMinTimeCandidate candidate = f_result.front();
-								if (candidate.guard_by_newton.get() != nullptr)
-								{
+								if (candidate.guard_by_newton.get() != nullptr) {
 									backend_->call("borderIsIncluded", true, 3, "vlnvlnvln", "b", &candidate.time, &candidate.range_by_newton.get_lower_bound().value, &candidate.range_by_newton.get_upper_bound().value, &included_by_newton_guard);
 									next_todo->discrete_guards.insert(candidate.guard_by_newton);
 								}
-								for (auto guard : candidate.other_guards_to_time_condition)
-								{
+								for (auto guard : candidate.other_guards_to_time_condition) {
 									bool on_border;
 									HYDLA_LOGGER_DEBUG_VAR(get_infix_string(guard.first));
 									backend_->call("onBorder", true, 2, "etvlt", "b", &guard.second, &candidate.time, &on_border);
-									if (on_border)
-									{
-										//if (included_by_newton_guard)throw HYDLA_ERROR("Both of 2 guards are on the border: " + get_infix_string(guard.first) +", " + get_infix_string(candidate.guard_by_newton));
+									if (on_border) {
 										next_todo->discrete_guards.insert(guard.first);
 									}
 								}
 							}
 						}
 						next_todo->next_pp_candidate_map = phase->next_pp_candidate_map;
-						for (auto ask : next_todo->discrete_asks)
-						{
+						for (auto ask : next_todo->discrete_asks) {
 							next_todo->next_pp_candidate_map.erase(ask.first);
 						}
 						next_todo->set_parameter_constraint(phase->get_parameter_constraint());
@@ -1854,12 +1836,15 @@ void PhaseSimulator::make_next_todo(phase_result_sptr_t& phase)
 						next_todo->prev_map = value_modifier->substitute_time(candidate.time, original_vm);
 						phase->profile["ApplyTime2Expr"] += apply_time_timer.get_elapsed_us();
 						next_todo->current_time = phase->end_time;
-						if (opts_->eager_approximation) approximate_phase(next_todo, phase->prev_map);
+						if (opts_->eager_approximation)
+							approximate_phase(next_todo, phase->prev_map);
 						phase->simulation_state = SIMULATED;
 						phase->todo_list.push_back(next_todo);
 					}
 
-					if (++time_it == time_result.end()) break;
+					if (++time_it == time_result.end())
+						break;
+					
 					//prepare new PhaseResult
 					phase.reset(new PhaseResult(*phase));
 					phase->id = ++phase_sum_;
@@ -1868,16 +1853,18 @@ void PhaseSimulator::make_next_todo(phase_result_sptr_t& phase)
 					phase->parent->children.push_back(phase);
 					phase->parent->todo_list.push_back(phase);
 					phase->todo_list.clear();
-					if (!(candidate.time.undefined() || candidate.time.infinite()))
-					{
-						// prepare new todo
+
+					// prepare new todo
+					if (!(candidate.time.undefined() || candidate.time.infinite())) {
 						next_todo.reset(new PhaseResult(*next_todo));
 						next_todo->id = ++phase_sum_;
 					}
+
 				}
 			}
 		}
 	}
+
 	revert_diff(*phase);
 
 	phase->profile["MakeNextTodo"] = next_todo_timer.get_elapsed_us();

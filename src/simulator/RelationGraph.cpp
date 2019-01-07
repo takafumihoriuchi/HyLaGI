@@ -9,31 +9,32 @@ using namespace std;
 namespace hydla {
 namespace simulator {
 
+// コンストラクタ
 RelationGraph::RelationGraph(const module_set_t &ms)
 {
-	for(auto module : ms)
-	{
+	for(auto module : ms) {
 		add(module);
 	}
 	current_guard_node = nullptr;
 	ignore_prev = true;
 }
 
+// デストラクタ
 RelationGraph::~RelationGraph()
 {
-	for(auto var : variable_nodes){
+	for (auto var : variable_nodes) {
 		delete var;
 	}
 
-	for(auto constraint : tell_nodes){
+	for (auto constraint : tell_nodes) {
 		delete constraint;
 	}
-	for(auto ask : ask_nodes)
-	{
+	
+	for (auto ask : ask_nodes) {
 		delete ask;
 	}
-	for(auto guard_node : guard_nodes)
-	{
+
+	for (auto guard_node : guard_nodes) {
 		delete guard_node;
 	}
 }
@@ -423,10 +424,12 @@ void RelationGraph::set_adopted(const module_set_t &ms, bool adopted)
 void RelationGraph::set_expanded_atomic(constraint_t cons, bool expanded)
 {
 	auto constraint_node_it = constraint_node_map.find(cons);
-	if(constraint_node_it != constraint_node_map.end())
-	{
+	// endに到達する前に見つけた場合
+	if (constraint_node_it != constraint_node_map.end()) {
 		constraint_node_it->second->expanded = expanded;
-	}else throw HYDLA_ERROR("constraint_node not found");
+	} else { // constraint-nodeのmapから見つけることができなかった
+		throw HYDLA_ERROR("constraint_node not found");
+	}
 }
 
 void RelationGraph::set_expanded_recursive(constraint_t cons, bool expanded)
