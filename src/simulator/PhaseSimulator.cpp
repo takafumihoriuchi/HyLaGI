@@ -28,10 +28,6 @@
 #include "kv/interval.hpp"
 #include "AffineApproximator.h"
 
-// HOR: added this
-#include "Value.h"
-#include "ValueNumerizer.h"
-
 #pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
 
 namespace hydla {
@@ -228,7 +224,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 						// current_val = it->second.get_unique_value();
 						// std::cout << it->first << ": " << ValueNumerizer().numerize(it->second.get_unique_value()) << std::endl;
 						std::cout << it->first << ": " << it->second.get_unique_value() << std::endl;
-						std::cout << "typeid(it->second.get_unique_value()).name(): " << typeid(it->second.get_unique_value()).name(); << std::endl;
+						std::cout << "typeid(it->second.get_unique_value()).name(): " << typeid(it->second.get_unique_value()).name() << std::endl;
 						// 後は、it->secondの数式を計算してdouble型にして保存したい
 
 						break; // 本当は、.get/name()では微分値も元の変数名で出てきてしまうので、対応能力を上げなくてはいけない
