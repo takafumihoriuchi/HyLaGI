@@ -215,28 +215,18 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				s.erase(0, pos + delimiter_pls.length());
 				sum += std::stoi(s);
 				std::cout << std::to_string(sum) << std::endl;
-				// std::string delimiter = "<";
-				// size_t pos = 0;
-				// std::string token;
-				// while ((pos = s.find(delimiter)) != std::string::npos) {
-				// 	token = s.substr(0, pos);
-				// 	std::cout << token << std::endl;
-				// 	s.erase(0, pos + delimiter.length());
-				// }
-				// std::cout << s << std::endl;
-				// get current value
+				// 変数の現在の値を取得する
 				double current_val;
 				variable_map_t vm = todo->variable_map;
-				for (auto it = vm.begin(); it!=vm.end(); ++it)
+				for (auto it = vm.begin(); it!=vm.end(); ++it) {
 					if (it->first.get_name() == "x") {
-						std::cout << "it->first.get_name(): " << it->first.get_name() << std::endl;
-						// current_val = it->second;
+						current_val = it->second;
 					}
-				// 「it->second」はHyLaGI特有の長い数式になってるのでそのままでは扱えない
+				}
 				// std::cout << "guard condition : " << sum << std::endl;
 				// std::cout << "current value   : " << current_val << std::endl;
 				if (sum < current_val) {
-					// std::cout << "YES!" << std::endl;
+					std::cout << "YES!" << current_val << std::endl;
 				}
 			}
 
