@@ -246,9 +246,9 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				// 	std::cout << "YES!" << std::endl;
 				// 	// relation_graph_->set_expanded_atomic(ask, false);
 				// }
-				typedef exprtk::symbol_table<T> symbol_table_t;
-				typedef exprtk::expression<T>     expression_t;
-				typedef exprtk::parser<T>             parser_t;
+				typedef exprtk::symbol_table<double> symbol_table_t;
+				typedef exprtk::expression<double>     expression_t;
+				typedef exprtk::parser<double>             parser_t;
 				double x;
 				std::string expression_string = "25x^5 - 35x^4 - 15x^3 + 40x^2 - 15x + 1";
 				symbol_table_t symbol_table;
