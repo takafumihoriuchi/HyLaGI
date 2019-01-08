@@ -225,7 +225,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				// }
 				// std::cout << s << std::endl;
 				// get current value
-				auto current_val;
+				double current_val;
 				variable_map_t vm = todo->variable_map;
 				for (auto it = vm.begin(); it!=vm.end(); ++it)
 					if (it->first == "x") current_val = it->second;
