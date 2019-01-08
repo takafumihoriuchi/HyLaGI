@@ -28,6 +28,10 @@
 #include "kv/interval.hpp"
 #include "AffineApproximator.h"
 
+// HOR: added this
+#include "Value.h"
+#include "ValueNumerizer.h"
+
 #pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
 
 namespace hydla {
