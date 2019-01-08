@@ -153,6 +153,10 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		std::cout << "\t=> 5.2.3.1.1:\t all the guards in model" << std::endl;
 		for (auto ask : relation_graph_->get_all_asks()) {
 			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
+			// 元々のガードをatomicにパーズ？
+			for (auto atomic_guard : relation_graph_->get_atomic_guards(ask->get_guard())) {
+				std::cout << "\t\t\t=> 5.2.3.1.1:\t atomic guard: " << get_infix_string(atomic_guard) << "\n";
+			}
 			
 			// 試しにEliminateNotAlwaysを参考にして全て消してみる（あっているかわからない）
 			// constraintについても設定したい
@@ -169,8 +173,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// もしくは次の方法で、指定された変数と二部グラフで繋がっているaskを取り出す
 		std::cout << "\t=> 5.2.3.1.2:\t guards related to variable: x" << std::endl;
 		for (auto ask : relation_graph_->get_adjacent_asks("x")) {
-			// std::cout << "\t\t\t=> 5.2.3.1.2:\t guard of x: " << get_infix_string(ask->get_guard()) << "\n";
-			std::cout << "\t\t\t=> 5.2.3.1.2:\t guard of x: " << get_infix_string(ask) << "\n";
+			std::cout << "\t\t\t=> 5.2.3.1.2:\t guard of x: " << get_infix_string(ask->get_guard()) << "\n";
 		}
 
 		// これらの処理は、既存コードの再利用ができれば良いが、力任せで出来ないこともない。
