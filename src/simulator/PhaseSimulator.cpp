@@ -140,6 +140,9 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 
 	// HOR: this section is for testing the implementations of 卒論研究
 	if (todo->phase_type == POINT_PHASE) { // monotonicity check in every PP
+
+		/*
+
 		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST" << std::endl;
 		std::cout << "\t=> 5.2.3.1.1:\t This is PP " << todo->id << std::endl;
 		
@@ -193,8 +196,10 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// => 指定したaskとconstraint_nodeを結びつける？
 		// => 対象のconstraint_nodeを削除する
 
+		*/
+
 		// 試しにfloor_splitted_into_blocks.hydlaの変数xが単調増加であることに限定して実装してみる
-		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
+		std::cout << "=> 5.2.3.1.1: HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
 		for (auto ask : relation_graph_->get_all_asks()) {
 			// 単調性判定の対象となるaskを選別する
 			std::string monotonic_var = "x";
@@ -239,8 +244,6 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 						break; // 本当は、.get/name()では微分値も元の変数名で出てきてしまうので、対応能力を上げなくてはいけない
 					}
 				}
-				std::cout << "guard condition : " << sum << std::endl;
-				std::cout << "current value   : " << current_val_str << std::endl;
 				typedef exprtk::symbol_table<double> symbol_table_t;
 				typedef exprtk::expression<double> expression_t;
 				typedef exprtk::parser<double> parser_t;
@@ -250,9 +253,11 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				parser_t parser;
 				parser.compile(current_val_str, expression);
 				double current_val = expression.value();
-
+				std::cout << "guard condition : " << sum << std::endl;
+				std::cout << "current value   : " << current_val << std::endl;
 				// 取り敢えずは、このcurrent_value_strを自分で数式処理して値に変換する
 				if (double(sum) < current_val) {
+					std::cout << "removing following ask: " << get_infix_string(ask) << std::endl;
 					relation_graph_->set_expanded_atomic(ask, false);
 				}
 
