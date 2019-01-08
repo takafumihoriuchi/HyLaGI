@@ -189,7 +189,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
 		for (auto ask : relation_graph_->get_all_asks()) {
 			// 単調性判定の対象となるaskを選別する
-			char monotonic_var = "x";
+			std::string monotonic_var = "x";
 			bool constraint_includes_monotonic_var = false;
 			for (auto var : relation_graph_->get_adjacent_variables(ask))
 				if (var == monotonic_var)
