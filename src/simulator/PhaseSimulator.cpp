@@ -249,17 +249,24 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				typedef exprtk::symbol_table<double> symbol_table_t;
 				typedef exprtk::expression<double>     expression_t;
 				typedef exprtk::parser<double>             parser_t;
-				double x;
-				std::string expression_string = "25x^5 - 35x^4 - 15x^3 + 40x^2 - 15x + 1";
+
 				symbol_table_t symbol_table;
-				symbol_table.add_variable("x",x);
 				expression_t expression;
 				expression.register_symbol_table(symbol_table);
 				parser_t parser;
-				parser.compile(expression_string, expression);
-				for (x = 1; x <= 2; x++) {
-					printf("%19.15f\t%19.15f\n", x, expression.value());
-				}
+				parser.compile(current_val_str, expression);
+				printf("exprtk ====> %f\n", expression.value());
+				// double x;
+				// std::string expression_string = "25x^5 - 35x^4 - 15x^3 + 40x^2 - 15x + 1";
+				// symbol_table_t symbol_table;
+				// symbol_table.add_variable("x",x);
+				// expression_t expression;
+				// expression.register_symbol_table(symbol_table);
+				// parser_t parser;
+				// parser.compile(expression_string, expression);
+				// for (x = 1; x <= 2; x++) {
+				// 	printf("%19.15f\t%19.15f\n", x, expression.value());
+				// }
 
 			}
 
