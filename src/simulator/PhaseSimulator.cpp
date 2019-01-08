@@ -91,6 +91,8 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				relation_graph_->set_expanded_atomic(constraint, false);
 			for (auto ask : nonalways_asks)
 				relation_graph_->set_expanded_atomic(ask, false);
+			// 言葉としてentailedとexpandedがある。それぞれ若干意味が異なる。
+			// expanded=>展開されている・極大無矛盾である
 		}
 		// IP
 		if (todo->phase_type == INTERVAL_PHASE) {
@@ -226,6 +228,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				variable_map_t vm = todo->variable_map;
 				for (auto it = vm.begin(); it!=vm.end(); ++it)
 					if (it->first == "x") current_val = it->second;
+				// 「it->second」はHyLaGI特有の長い数式になってるのでそのままでは扱えない
 				if (sum < current_val) {
 					std::cout << "YES!" << std::endl;
 				}
