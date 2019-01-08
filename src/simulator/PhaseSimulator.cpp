@@ -207,10 +207,10 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				int sum = 0;
 				size_t pos = 0;
 				pos = s.find("+");
-				sum += atoi(s.substr(0, pos));
+				sum += std::atoi(s.substr(0, pos));
 				s.erase(0, pos + "+".length());
-				sum += atoi(s);
-				std::cout << itoa(sum) << std::endl;
+				sum += std::atoi(s);
+				std::cout << std::itoa(sum) << std::endl;
 				// std::string delimiter = "<";
 				// size_t pos = 0;
 				// std::string token;
