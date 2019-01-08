@@ -228,7 +228,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				double current_val;
 				variable_map_t vm = todo->variable_map;
 				for (auto it = vm.begin(); it!=vm.end(); ++it)
-					if (it->first == "x") current_val = it->second;
+					if (it->first->get_name() == "x") current_val = it->second;
 				// 「it->second」はHyLaGI特有の長い数式になってるのでそのままでは扱えない
 				std::cout << "guard condition : " << sum << std::endl;
 				std::cout << "current value   : " << current_val << std::endl;
