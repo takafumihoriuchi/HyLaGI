@@ -599,10 +599,8 @@ bool RelationGraph::to_be_considered(const AskNode *ask, bool ignore_prev) const
 ConstraintStore RelationGraph::get_constraints()
 {
 	ConstraintStore constraints;
-	for(auto tell_node : tell_nodes)
-	{
-		if(tell_node->is_active())
-		{
+	for (auto tell_node : tell_nodes) {
+		if (tell_node->is_active()) {
 			constraints.add_constraint(tell_node->tell);
 		}
 	}

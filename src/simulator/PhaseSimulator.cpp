@@ -157,9 +157,10 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			for (auto atomic_guard : relation_graph_->get_atomic_guards(ask->get_guard())) {
 				std::cout << "\t\t\t\tatomic guard: " << get_infix_string(atomic_guard->constraint) << "\n";
 			}
-			
-			// 試しにEliminateNotAlwaysを参考にして全て消してみる（あっているかわからない）
-			// constraintについても設定したい
+			// atomic_guardの等号・不等号の種類は限られているので、そこで分けて、指定された変数名を持つ方とそうでない方（左極限記号は変数名の右の位置も自分につく可能性がある）
+
+			// 試しにEliminateNotAlwaysを参考にして全て消してみる
+			// constraintについても設定するべきか？？ガード付き制約はaskでカバーされるのか。だったらどうしてEliminateの方では、constraintだけではなくaskについても設定しているのか
 			// relation_graph_->set_expanded_atomic(ask, false);
 
 			// そのaskにどの変数が登場しているのかを出力する
@@ -181,9 +182,28 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// つまり、自分でC++コードを書いて数式処理をする
 
 		// ⑤ 単調性により成立しなくなったガードを削除する（* 削除するのか、参照しないように印を付けるのか）
-		// => 指定したaskとconstraint_nodeを結びつける
-
+		// => 指定したaskとconstraint_nodeを結びつける？
 		// => 対象のconstraint_nodeを削除する
+
+		// 試しにfloor_splitted_into_blocks.hydlaの変数xが単調増加であることに限定して実装してみる
+		std::cout << "=> 5.2.3.1.1:\t HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
+		for (auto ask : relation_graph_->get_all_asks()) {
+			// 単調性判定の対象となるaskを選別する
+			char monotonic_var = "x";
+			bool constraint_includes_monotonic_var = false;
+			for (auto var : relation_graph_->get_adjacent_variables(ask))
+				if (var == monotonic_var)
+					constraint_includes_monotonic_var = true;
+			if (!constraint_includes_monotonic_var)
+				continue;
+			// askからguardを取り出す
+			for (auto atomic_guard : relation_graph_->get_atomic_guards(ask->get_guard())) {
+				std::cout << "\t\t\t\tatomic guard: " << get_infix_string(atomic_guard->constraint) << "\n";
+				// get_infix_string(atomic_guard->constraint)
+			}
+
+		}
+
 
 	}
 	// ここまで編集した
