@@ -167,7 +167,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// これは、②でユーザーがオプションで指定した変数に一致したaskをif文で選択することで実現可能
 		// もしくは次の方法で、指定された変数と二部グラフで繋がっているaskを取り出す
 		std::cout << "\t=> 5.2.3.1.2:\t guards related to variable: x" << std::endl;
-		for (auto ask : get_adjacent_asks("x")) {
+		for (auto ask : relation_graph_->get_adjacent_asks("x")) {
 			std::cout << "\t\t\t=> 5.2.3.1.2:\t guard of x: " << get_infix_string(ask->get_guard()) << "\n";
 		}
 
