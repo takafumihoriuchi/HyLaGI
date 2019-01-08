@@ -200,15 +200,17 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			for (auto atomic_guard : relation_graph_->get_atomic_guards(ask->get_guard())) {
 				std::string s = get_infix_string(atomic_guard->constraint);
 				// 様子見のため「x<18+1」のようなもので試してみる
-				if (s.find("x<") == std::string::npos) continue;
-				else s.erase(0, "x<".length());
+				std::string delimiter_xlt = "x<";
+				if (s.find(delimiter_xlt) == std::string::npos) continue;
+				else s.erase(0, delimiter_xlt.length());
 				std::cout << s << std::endl;
 				// 「+」の右と左を足す
 				int sum = 0;
 				size_t pos = 0;
-				pos = s.find("+");
+				std::string delimiter_pls = "+";
+				pos = s.find(delimiter_pls);
 				sum += std::stoi(s.substr(0, pos));
-				s.erase(0, pos + "+".length());
+				s.erase(0, pos + delimiter_pls.length());
 				sum += std::stoi(s);
 				std::cout << std::to_string(sum) << std::endl;
 				// std::string delimiter = "<";
