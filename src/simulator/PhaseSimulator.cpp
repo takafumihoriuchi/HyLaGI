@@ -198,9 +198,11 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				continue;
 			// askからguardを取り出し、atomic_guardに分割する
 			for (auto atomic_guard : relation_graph_->get_atomic_guards(ask->get_guard())) {
-				// 試しに「x<18+1」のようなものを対象とする
-
+				
 				std::string s = get_infix_string(atomic_guard->constraint);
+				// 様子見のため、試しに「x<18+1」のようなものを対象とする
+				if (s.find("x<") == std::string::npos) continue;
+
 				std::string delimiter = "<";
 				size_t pos = 0;
 				std::string token;
