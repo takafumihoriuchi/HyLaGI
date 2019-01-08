@@ -234,9 +234,9 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 					if (it->first.get_name() == "x") {
 						// current_val = it->second.get_unique_value();
 						// std::cout << it->first << ": " << ValueNumerizer().numerize(it->second.get_unique_value()) << std::endl;
-						std::cout << it->first << ": " << it->second.get_unique_value() << std::endl;
-						std::cout << it->first << ": " << it->second.get_string() << std::endl;
-						std::cout << "type: " << typeid(it->second.get_unique_value()).name() << std::endl;
+						// std::cout << it->first << ": " << it->second.get_unique_value() << std::endl;
+						// std::cout << it->first << ": " << it->second.get_string() << std::endl;
+						// std::cout << "type: " << typeid(it->second.get_unique_value()).name() << std::endl;
 						// 後は、it->secondの数式を計算してdouble型にして保存したい
 						// auto current_value = it->second.get_unique_value();
 						current_val_str = it->second.get_string();
