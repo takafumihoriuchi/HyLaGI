@@ -241,32 +241,20 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				}
 				std::cout << "guard condition : " << sum << std::endl;
 				std::cout << "current value   : " << current_val_str << std::endl;
-				// 取り敢えずは、このcurrent_value_strを自分で数式処理して値に変換する
-				// if (sum < current_val) {
-				// 	std::cout << "YES!" << std::endl;
-				// 	// relation_graph_->set_expanded_atomic(ask, false);
-				// }
 				typedef exprtk::symbol_table<double> symbol_table_t;
-				typedef exprtk::expression<double>     expression_t;
-				typedef exprtk::parser<double>             parser_t;
-
+				typedef exprtk::expression<double> expression_t;
+				typedef exprtk::parser<double> parser_t;
 				symbol_table_t symbol_table;
 				expression_t expression;
 				expression.register_symbol_table(symbol_table);
 				parser_t parser;
 				parser.compile(current_val_str, expression);
-				printf("exprtk ====> %f\n", expression.value());
-				// double x;
-				// std::string expression_string = "25x^5 - 35x^4 - 15x^3 + 40x^2 - 15x + 1";
-				// symbol_table_t symbol_table;
-				// symbol_table.add_variable("x",x);
-				// expression_t expression;
-				// expression.register_symbol_table(symbol_table);
-				// parser_t parser;
-				// parser.compile(expression_string, expression);
-				// for (x = 1; x <= 2; x++) {
-				// 	printf("%19.15f\t%19.15f\n", x, expression.value());
-				// }
+				double current_val = expression.value();
+
+				// 取り敢えずは、このcurrent_value_strを自分で数式処理して値に変換する
+				if (double(sum) < current_val) {
+					relation_graph_->set_expanded_atomic(ask, false);
+				}
 
 			}
 
