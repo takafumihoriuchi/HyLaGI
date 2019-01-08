@@ -17,6 +17,9 @@
 #include "ValueModifier.h"
 #include "GuardMapApplier.h"
 
+// added this
+#include "ValueNumerizer.h"
+
 #include "MinTimeCalculator.h"
 
 #include "Backend.h"
