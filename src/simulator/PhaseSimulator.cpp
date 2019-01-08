@@ -221,7 +221,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				for (auto it = vm.begin(); it!=vm.end(); ++it) {
 					if (it->first.get_name() == "x") {
 						// current_val = it->second.get_unique_value();
-						std::cout << it->first << ": " << it->second.get_unique_value() << current_val << std::endl;
+						std::cout << it->first << ": " << it->second << current_val << std::endl;
 					}
 				}
 				// std::cout << "guard condition : " << sum << std::endl;
