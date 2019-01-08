@@ -107,8 +107,10 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	}
 
 	// PP
-	if (todo->phase_type == POINT_PHASE)
+	if (todo->phase_type == POINT_PHASE) {
 		backend_->call("setCurrentTime", true, 1, "vln", "", &todo->current_time);
+		// HOR: ここに１行だけ追加して、処理自体は別の関数・ファイルに記述する
+	}
 
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
 	
@@ -216,7 +218,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				std::string delimiter_xlt = "x<";
 				if (s.find(delimiter_xlt) == std::string::npos) continue;
 				else s.erase(0, delimiter_xlt.length());
-				std::cout << s << std::endl;
+				// std::cout << s << std::endl;
 				// 「+」の右と左を足す
 				int sum = 0;
 				size_t pos = 0;
@@ -225,7 +227,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				sum += std::stoi(s.substr(0, pos));
 				s.erase(0, pos + delimiter_pls.length());
 				sum += std::stoi(s);
-				std::cout << std::to_string(sum) << std::endl;
+				// std::cout << std::to_string(sum) << std::endl;
 				// 変数の現在の値を取得する
 				std::string current_val_str;
 				variable_map_t vm = todo->variable_map;
