@@ -222,6 +222,13 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				// 	s.erase(0, pos + delimiter.length());
 				// }
 				// std::cout << s << std::endl;
+				int current_val;
+				variable_map_t vm = todo->variable_map;
+				for (auto it = vm.begin(); it!=vm.end(); ++it)
+					if (it->first == "x") current_val = std::stoi(it->second);
+				if (sum < current_val) {
+					std::cout << "YES!" << std::endl;
+				}
 			}
 
 		}
