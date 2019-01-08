@@ -226,7 +226,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 					// std::cout << it->first << ": " << it->second << std::endl;
 					if (it->first.get_name() == "x") {
 						// current_val = it->second.get_unique_value();
-						std::cout << it->first << ": " << ValueNumerizer().numerize(it->second) << std::endl;
+						std::cout << it->first << ": " << ValueNumerizer().numerize(it->second.unique()) << std::endl;
 						// 後は、it->secondの数式を計算してdouble型にして保存したい
 
 						break; // 本当は、.get/name()では微分値も元の変数名で出てきてしまうので、対応能力を上げなくてはいけない
