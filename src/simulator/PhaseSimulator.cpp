@@ -219,10 +219,11 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				double current_val;
 				variable_map_t vm = todo->variable_map;
 				for (auto it = vm.begin(); it!=vm.end(); ++it) {
-					std::cout << it->first << ": " << it->second << std::endl;
+					// std::cout << it->first << ": " << it->second << std::endl;
 					if (it->first.get_name() == "x") {
 						// current_val = it->second.get_unique_value();
 						std::cout << "\t" << it->first << ": " << it->second << std::endl;
+						break; // 本当は、.get/name()では微分値も元の変数名で出てきてしまうので、対応能力を上げなくてはいけない
 					}
 				}
 				// std::cout << "guard condition : " << sum << std::endl;
