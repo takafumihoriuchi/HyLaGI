@@ -155,7 +155,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
 			// 元々のガードをatomicにパーズ？
 			for (auto atomic_guard : relation_graph_->get_atomic_guards(ask->get_guard())) {
-				std::cout << "\t\t\t=> 5.2.3.1.1:\t atomic guard: " << get_infix_string(atomic_guard) << "\n";
+				std::cout << "\t\t\t=> 5.2.3.1.1:\t atomic guard: " << atomic_guard << "\n";
 			}
 			
 			// 試しにEliminateNotAlwaysを参考にして全て消してみる（あっているかわからない）
