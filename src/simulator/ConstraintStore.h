@@ -16,18 +16,18 @@ typedef std::set<constraint_t> constraints_t;
 class ConstraintStore : public constraints_t
 {
 public:
-  ConstraintStore();
-  ConstraintStore(constraint_t t);
+	ConstraintStore();
+	ConstraintStore(constraint_t t);
 
-  void add_constraint(const constraint_t &constraint);
-  void add_constraint_store(const ConstraintStore &store);
+	void add_constraint(const constraint_t &constraint);
+	void add_constraint_store(const ConstraintStore &store);
 
-  bool consistent() const;
-  // return if this constraint store is always true
-  bool valid() const;
-  void set_consistency(bool);
+	bool consistent() const;
+	// return if this constraint store is always true
+	bool valid() const;
+	void set_consistency(bool);
 private:
-  bool is_consistent;
+	bool is_consistent;
 };
 
 std::ostream &operator<<(std::ostream &ost, const ConstraintStore &store);

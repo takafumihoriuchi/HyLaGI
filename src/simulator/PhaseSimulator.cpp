@@ -154,26 +154,22 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		for (auto ask : relation_graph_->get_all_asks()) {
 			std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
 			
-			// 試し
-			relation_graph_->set_expanded_atomic(ask, false);
+			// 試しにEliminateNotAlwaysを参考にして全て消してみる（あっているかわからない）
+			// relation_graph_->set_expanded_atomic(ask, false);
 
 			// そのaskにどの変数が登場しているのかを出力する
 			for (auto var : relation_graph_->get_adjacent_variables(ask)) {
 				std::cout << "\t\t\t\treferenced variable: " << var << "\n";
 			}
 		}
+
 		// ③ 「変数x」に関するガードだけを抜き出す
 		// これは、②でユーザーがオプションで指定した変数に一致したaskをif文で選択することで実現可能
-
-		// 次の方法でガードを取り出すこともできる（positiveとnegativeに分ける）
-		// std::cout << "\t\t=> 5.2.3.1.1:\t positive asks" << std::endl; // PPで出現
-		// for (auto ask : todo->get_all_positive_asks()) { // askとは、条件付き制約の前件と後件をまとめたもの
-		// 	std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
-		// } // 全てのaskはpositiveとnegativeに分類される
-		// std::cout << "\t\t=> 5.2.3.1.1:\t negative asks" << std::endl; // IPで出現
-		// for (auto ask : todo->get_all_negative_asks()) {
-		// 	std::cout << "\t\t\t=> 5.2.3.1.1:\t guard: " << get_infix_string(ask->get_guard()) << "\n";
-		// }
+		// もしくは次の方法で、指定された変数と二部グラフで繋がっているaskを取り出す
+		std::cout << "\t=> 5.2.3.1.2:\t guards related to variable: x" << std::endl;
+		for (auto ask : get_adjacent_asks("x")) {
+			std::cout << "\t\t\t=> 5.2.3.1.2:\t guard of x: " << get_infix_string(ask->get_guard()) << "\n";
+		}
 
 		// これらの処理は、既存コードの再利用ができれば良いが、力任せで出来ないこともない。
 		// ④ 現在のxの値との比較（ガードの判定を行なっているコードを参考にする）
