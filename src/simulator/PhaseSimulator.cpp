@@ -224,13 +224,16 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				// 	s.erase(0, pos + delimiter.length());
 				// }
 				// std::cout << s << std::endl;
-				int current_val;
+				// get current value
+				auto current_val;
 				variable_map_t vm = todo->variable_map;
 				for (auto it = vm.begin(); it!=vm.end(); ++it)
 					if (it->first == "x") current_val = it->second;
 				// 「it->second」はHyLaGI特有の長い数式になってるのでそのままでは扱えない
+				std::cout << "guard condition : " << sum << std::endl;
+				std::cout << "current value   : " << current_val << std::endl;
 				if (sum < current_val) {
-					std::cout << "YES!" << std::endl;
+					// std::cout << "YES!" << std::endl;
 				}
 			}
 
