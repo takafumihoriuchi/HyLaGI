@@ -220,7 +220,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				variable_map_t vm = todo->variable_map;
 				for (auto it = vm.begin(); it!=vm.end(); ++it) {
 					if (it->first.get_name() == "x") {
-						current_val = value_t(it->second);
+						current_val = it->second.get_unique_value();
 					}
 				}
 				// std::cout << "guard condition : " << sum << std::endl;
