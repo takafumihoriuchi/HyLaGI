@@ -230,7 +230,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 						std::cout << "type: " << typeid(it->second.get_unique_value()).name() << std::endl;
 						// 後は、it->secondの数式を計算してdouble型にして保存したい
 						auto current_value = it->second.get_unique_value();
-						std::cout << "==> " << ValueNumerizer().numerize(current_value) << std::endl;
+						std::cout << "==> " << double(ValueNumerizer().numerize(current_value)) << std::endl;
 						break; // 本当は、.get/name()では微分値も元の変数名で出てきてしまうので、対応能力を上げなくてはいけない
 					}
 				}
