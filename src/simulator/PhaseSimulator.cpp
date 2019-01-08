@@ -31,6 +31,9 @@
 #include "kv/interval.hpp"
 #include "AffineApproximator.h"
 
+// added by HORiuchi
+#include "exprtk.hpp"
+
 #pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
 
 namespace hydla {
@@ -238,10 +241,25 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				}
 				std::cout << "guard condition : " << sum << std::endl;
 				std::cout << "current value   : " << current_val_str << std::endl;
+				// 取り敢えずは、このcurrent_value_strを自分で数式処理して値に変換する
 				// if (sum < current_val) {
 				// 	std::cout << "YES!" << std::endl;
 				// 	// relation_graph_->set_expanded_atomic(ask, false);
 				// }
+				typedef exprtk::symbol_table<T> symbol_table_t;
+				typedef exprtk::expression<T>     expression_t;
+				typedef exprtk::parser<T>             parser_t;
+				std::string expression_string = "25x^5 - 35x^4 - 15x^3 + 40x^2 - 15x + 1";
+				symbol_table_t symbol_table;
+				symbol_table.add_variable("x",x);
+				expression_t expression;
+				expression.register_symbol_table(symbol_table);
+				parser_t parser;
+				parser.compile(expression_string, expression);
+				for (x = 1; x <= 2; x++) {
+					printf("%19.15f\t%19.15f\n",x,expression.value());
+				}
+
 			}
 
 		}
