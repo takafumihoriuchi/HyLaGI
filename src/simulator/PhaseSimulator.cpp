@@ -201,7 +201,72 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 
 		*/
 
-		// 試しにfloor_splitted_into_blocks.hydlaの変数xが単調増加であることに限定して実装してみる
+		// // 試しにfloor_splitted_into_blocks.hydlaの変数xが単調増加であることに限定して実装してみる
+		// std::cout << "=> 5.2.3.1.1: HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
+		// for (auto ask : relation_graph_->get_all_asks()) {
+		// 	// 単調性判定の対象となるaskを選別する
+		// 	std::string monotonic_var = "x";
+		// 	bool constraint_includes_monotonic_var = false;
+		// 	for (auto var : relation_graph_->get_adjacent_variables(ask))
+		// 		if (var == monotonic_var)
+		// 			constraint_includes_monotonic_var = true;
+		// 	if (!constraint_includes_monotonic_var)
+		// 		continue;
+		// 	// askからguardを取り出し、atomic_guardに分割する
+		// 	for (auto atomic_guard : relation_graph_->get_atomic_guards(ask->get_guard())) {
+		// 		std::string s = get_infix_string(atomic_guard->constraint);
+		// 		// 様子見のため「x<18+1」のようなもので試してみる
+		// 		std::string delimiter_xlt = "x<";
+		// 		if (s.find(delimiter_xlt) == std::string::npos) continue;
+		// 		else s.erase(0, delimiter_xlt.length());
+		// 		// std::cout << s << std::endl;
+		// 		// 「+」の右と左を足す
+		// 		int sum = 0;
+		// 		size_t pos = 0;
+		// 		std::string delimiter_pls = "+";
+		// 		pos = s.find(delimiter_pls);
+		// 		sum += std::stoi(s.substr(0, pos));
+		// 		s.erase(0, pos + delimiter_pls.length());
+		// 		sum += std::stoi(s);
+		// 		// std::cout << std::to_string(sum) << std::endl;
+		// 		// 変数の現在の値を取得する
+		// 		std::string current_val_str;
+		// 		variable_map_t vm = todo->variable_map;
+		// 		for (auto it = vm.begin(); it!=vm.end(); ++it) {
+		// 			// std::cout << it->first << ": " << it->second << std::endl;
+		// 			if (it->first.get_name() == "x") {
+		// 				// current_val = it->second.get_unique_value();
+		// 				// std::cout << it->first << ": " << ValueNumerizer().numerize(it->second.get_unique_value()) << std::endl;
+		// 				// std::cout << it->first << ": " << it->second.get_unique_value() << std::endl;
+		// 				// std::cout << it->first << ": " << it->second.get_string() << std::endl;
+		// 				// std::cout << "type: " << typeid(it->second.get_unique_value()).name() << std::endl;
+		// 				// 後は、it->secondの数式を計算してdouble型にして保存したい
+		// 				// auto current_value = it->second.get_unique_value();
+		// 				current_val_str = it->second.get_string();
+		// 				// std::cout << "==> " << ValueNumerizer().numerize(current_value)-> << std::endl;
+		// 				break; // 本当は、.get/name()では微分値も元の変数名で出てきてしまうので、対応能力を上げなくてはいけない
+		// 			}
+		// 		}
+		// 		typedef exprtk::symbol_table<double> symbol_table_t;
+		// 		typedef exprtk::expression<double> expression_t;
+		// 		typedef exprtk::parser<double> parser_t;
+		// 		symbol_table_t symbol_table;
+		// 		expression_t expression;
+		// 		expression.register_symbol_table(symbol_table);
+		// 		parser_t parser;
+		// 		parser.compile(current_val_str, expression);
+		// 		double current_val = expression.value();
+		// 		std::cout << "guard condition : " << sum << std::endl;
+		// 		std::cout << "current value   : " << current_val << std::endl;
+		// 		// 取り敢えずは、このcurrent_value_strを自分で数式処理して値に変換する
+		// 		if (double(sum) < current_val) {
+		// 			std::cout << "removing following ask: " << get_infix_string(ask) << std::endl;
+		// 			relation_graph_->set_expanded_atomic(ask, false);
+		// 		}
+		// 	}
+		// }
+		// 研究室内提出に際しての実装: bouncing_down_stairs_corridorの変数xが単調であるとわかったことが前提
+		// 現在のテスト実装は効率の良くない処理を繰り返してるので、最終的にはそれを修正したコードを作成する。
 		std::cout << "=> 5.2.3.1.1: HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
 		for (auto ask : relation_graph_->get_all_asks()) {
 			// 単調性判定の対象となるaskを選別する
@@ -215,6 +280,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			// askからguardを取り出し、atomic_guardに分割する
 			for (auto atomic_guard : relation_graph_->get_atomic_guards(ask->get_guard())) {
 				std::string s = get_infix_string(atomic_guard->constraint);
+				std::cout << ">> atomic_guard is: " << s << std::endl;
 				// 様子見のため「x<18+1」のようなもので試してみる
 				std::string delimiter_xlt = "x<";
 				if (s.find(delimiter_xlt) == std::string::npos) continue;
@@ -263,9 +329,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 					std::cout << "removing following ask: " << get_infix_string(ask) << std::endl;
 					relation_graph_->set_expanded_atomic(ask, false);
 				}
-
 			}
-
 		}
 
 
