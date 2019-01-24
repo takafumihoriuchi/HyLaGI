@@ -110,6 +110,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	if (todo->phase_type == POINT_PHASE) {
 		backend_->call("setCurrentTime", true, 1, "vln", "", &todo->current_time);
 		// HOR: ここに１行だけ追加して、処理自体は別の関数・ファイルに記述する
+		// make_next_todo()の前か後のどちらに置くのが適切なのかを詳しく調べる必要がある。
 	}
 
 	list<phase_result_sptr_t> phase_list = make_results_from_todo(todo);
