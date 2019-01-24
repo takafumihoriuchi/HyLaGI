@@ -201,6 +201,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 
 		*/
 
+		// // Zeno現象の会費として活用できる（こともある）
 		// // 試しにfloor_splitted_into_blocks.hydlaの変数xが単調増加であることに限定して実装してみる
 		// std::cout << "=> 5.2.3.1.1: HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
 		// for (auto ask : relation_graph_->get_all_asks()) {
@@ -265,6 +266,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// 		}
 		// 	}
 		// }
+		
 		// 研究室内提出に際しての実装: bouncing_down_stairs_corridorの変数xが単調であるとわかったことが前提
 		// 現在のテスト実装は効率の良くない処理を繰り返してるので、最終的にはそれを修正したコードを作成する。
 		std::cout << "=> 5.2.3.1.1: HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
@@ -280,12 +282,26 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			// askからguardを取り出し、atomic_guardに分割する
 			for (auto atomic_guard : relation_graph_->get_atomic_guards(ask->get_guard())) {
 				std::string s = get_infix_string(atomic_guard->constraint);
-				std::cout << ">> atomic_guard is: " << s << std::endl;
-				// 様子見のため「x<18+1」のようなもので試してみる
-				std::string delimiter_xlt = "x<";
-				if (s.find(delimiter_xlt) == std::string::npos) continue;
-				else s.erase(0, delimiter_xlt.length());
-				// std::cout << s << std::endl;
+				std::cout << ">>>> atomic_guard is: " << s << std::endl;
+				// このモデルでは三種類
+				std::string delimiter_xeq = "x-=";
+				std::string delimiter_xgeq = "<=x-";
+				std::string delimiter_xlt = "x-<";
+
+				int xeq=1, xgeq=1, xlt=1;
+				// 見つからなかったら0にする。見つかったら1のまま
+				if (s.find(delimiter_xeq) == std::string::npos) xeq = 0;
+				if (s.find(delimiter_xgeq) == std::string::npos) xgeq = 0;
+				if (s.find(delimiter_xlt) == std::string::npos) xlt = 0;
+				//
+				if (xeq & xgeq & xlt) continue;
+				else {
+					if (xeq) s.erase(0, delimiter_xeq.length());
+					if (xgeq) s.erase(0, delimiter_xgeq.length());
+					if (xeq) s.erase(0, delimiter_xlt.length());
+				}
+				//
+				std::cout << ">>>> shaved atomic guard is: " << s << std::endl;
 				// 「+」の右と左を足す
 				int sum = 0;
 				size_t pos = 0;
