@@ -294,7 +294,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				if (s.find(delimiter_xgeq) == std::string::npos) xgeq = 0;
 				if (s.find(delimiter_xlt) == std::string::npos) xlt = 0;
 				//
-				if (xeq & xgeq & xlt) continue;
+				if (!(xeq & xgeq & xlt) continue;
 				else {
 					if (xeq) s.erase(0, delimiter_xeq.length());
 					if (xgeq) s.erase(0, delimiter_xgeq.length());
