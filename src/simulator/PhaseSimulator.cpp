@@ -285,19 +285,21 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				std::cout << ">>>> atomic_guard is: " << s << std::endl;
 				// このモデルでは三種類
 				std::string delimiter_xeq = "x-=";
-				std::string delimiter_xgeq = "<=x-";
+				// std::string delimiter_xgeq = "<=x-";
 				std::string delimiter_xlt = "x-<";
 
-				int xeq=1, xgeq=1, xlt=1;
+				// int xeq=1, xgeq=1, xlt=1;
+				int xeq=1, xlt=1;
 				// 見つからなかったら0にする。見つかったら1のまま
 				if (s.find(delimiter_xeq) == std::string::npos) xeq = 0;
-				if (s.find(delimiter_xgeq) == std::string::npos) xgeq = 0;
+				// if (s.find(delimiter_xgeq) == std::string::npos) xgeq = 0;
 				if (s.find(delimiter_xlt) == std::string::npos) xlt = 0;
 				//
-				if (!(xeq & xgeq & xlt)) continue;
+				// if (!(xeq & xgeq & xlt)) continue;
+				if (!(xeq | xlt)) continue;
 				else {
 					if (xeq) s.erase(0, delimiter_xeq.length());
-					if (xgeq) s.erase(0, delimiter_xgeq.length());
+					// if (xgeq) s.erase(0, delimiter_xgeq.length());
 					if (xeq) s.erase(0, delimiter_xlt.length());
 				}
 				//
