@@ -300,19 +300,27 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				else {
 					if (xeq) s.erase(0, delimiter_xeq.length());
 					// if (xgeq) s.erase(0, delimiter_xgeq.length());
-					if (xeq) s.erase(0, delimiter_xlt.length());
+					if (xlt) s.erase(0, delimiter_xlt.length());
 				}
 				//
 				std::cout << ">>>> shaved atomic guard is: " << s << std::endl;
-				// 「+」の右と左を足す
+				//
+				// xle では「+」の右と左を足す
+				// xeq は足し算が入らないからそのまま使える
 				int sum = 0;
-				size_t pos = 0;
-				std::string delimiter_pls = "+";
-				pos = s.find(delimiter_pls);
-				sum += std::stoi(s.substr(0, pos));
-				s.erase(0, pos + delimiter_pls.length());
-				sum += std::stoi(s);
-				// std::cout << std::to_string(sum) << std::endl;
+				if (xeq) {
+					sum += std::stoi(s);
+				}
+				if (xlt) {
+					size_t pos = 0;
+					std::string delimiter_pls = "+";
+					pos = s.find(delimiter_pls);
+					sum += std::stoi(s.substr(0, pos));
+					s.erase(0, pos + delimiter_pls.length());
+					sum += std::stoi(s);
+				}
+				std::cout << ">>>> shaved number is: " << std::to_string(sum) << std::endl;
+				//
 				// 変数の現在の値を取得する
 				std::string current_val_str;
 				variable_map_t vm = todo->variable_map;
