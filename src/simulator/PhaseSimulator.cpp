@@ -206,7 +206,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// std::cout << "=> 5.2.3.1.1: HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
 		for (auto ask : relation_graph_->get_all_asks()) {
 			// 単調性判定の対象となるaskを選別する
-			std::string monotonic_var = "x";
+			std::string monotonic_var = "x-";
 			bool constraint_includes_monotonic_var = false;
 			for (auto var : relation_graph_->get_adjacent_variables(ask))
 				if (var == monotonic_var)
@@ -217,7 +217,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			for (auto atomic_guard : relation_graph_->get_atomic_guards(ask->get_guard())) {
 				std::string s = get_infix_string(atomic_guard->constraint);
 				// 様子見のため「x<18+1」のようなもので試してみる
-				std::string delimiter_xlt = "x<";
+				std::string delimiter_xlt = "x-<";
 				if (s.find(delimiter_xlt) == std::string::npos) continue;
 				else s.erase(0, delimiter_xlt.length());
 				// std::cout << s << std::endl;
@@ -235,7 +235,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				variable_map_t vm = todo->variable_map;
 				for (auto it = vm.begin(); it!=vm.end(); ++it) {
 					// std::cout << it->first << ": " << it->second << std::endl;
-					if (it->first.get_name() == "x") {
+					if (it->first.get_name() == "x-") {
 						// current_val = it->second.get_unique_value();
 						// std::cout << it->first << ": " << ValueNumerizer().numerize(it->second.get_unique_value()) << std::endl;
 						// std::cout << it->first << ": " << it->second.get_unique_value() << std::endl;
