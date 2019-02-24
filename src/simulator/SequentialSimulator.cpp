@@ -14,7 +14,7 @@ using namespace std;
 // ここではSimulatora構造体にoptsを与え、変数printerにbackendを与えている。
 SequentialSimulator::SequentialSimulator(Opts &opts) : Simulator(opts), printer(backend)
 {
-	std::cout << "=> 4.1.0.1:\t Hello, we\'ve just created a new instance of SequentialSimulator\n";
+	// std::cout << "=> 4.1.0.1:\t Hello, we\'ve just created a new instance of SequentialSimulator\n";
 }
 
 SequentialSimulator::~SequentialSimulator()
@@ -23,17 +23,17 @@ SequentialSimulator::~SequentialSimulator()
 
 phase_result_sptr_t SequentialSimulator::simulate()
 {
-	std::cout << "=> 5:\t IN SEQUENTIAL SIMULATOR" << std::endl;
+	// std::cout << "=> 5:\t IN SEQUENTIAL SIMULATOR" << std::endl;
 
 	std::string error_str = "";
-	std::cout << "=> 5.1:\t calling make_initial_todo()" << std::endl;
+	// std::cout << "=> 5.1:\t calling make_initial_todo()" << std::endl;
 	// シミュレーションのスタックに最初の状態を詰め込む
 	// initial_todoは、最初のPPを表している。
 	make_initial_todo();
 
 	try
 	{
-		std::cout << "=> 5.2:\t calling dfs() with try" << std::endl;
+		// std::cout << "=> 5.2:\t calling dfs() with try" << std::endl;
 		dfs(result_root_);
 		// result_root_: root of the tree of result trajectories
 		// result_root_自体は、Simulatorクラスのprotectedなメンバ変数
@@ -49,7 +49,7 @@ phase_result_sptr_t SequentialSimulator::simulate()
 		exit_status = EXIT_FAILURE;
 	}
 
-	std::cout << "=> 5.3:\t returning from simulate()" << std::endl;
+	// std::cout << "=> 5.3:\t returning from simulate()" << std::endl;
 	HYDLA_LOGGER_DEBUG("%% simulation ended");
 	return result_root_;
 }
@@ -57,7 +57,7 @@ phase_result_sptr_t SequentialSimulator::simulate()
 // シミュレーションの本体 // currentがphaseの情報を保持している
 void SequentialSimulator::dfs(phase_result_sptr_t current)
 {
-	std::cout << "\n=> 5.2.0:\t entered dfs()" << std::endl;
+	// std::cout << "\n=> 5.2.0:\t entered dfs()" << std::endl;
 	auto detail = logger::Detail(__FUNCTION__);
 
 	// 平時は呼ばれない
@@ -69,10 +69,10 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 	}
 
 	// PhaseSimulator.cppの関数を呼ぶ
-	std::cout << "=> 5.2.1:\t calling apply_diff()" << std::endl;
+	// std::cout << "=> 5.2.1:\t calling apply_diff()" << std::endl;
 	phase_simulator_->apply_diff(*current);
 
-	std::cout << "=> 5.2.2:\t current->todo_list.empty(): " << current->todo_list.empty() << std::endl;
+	// std::cout << "=> 5.2.2:\t current->todo_list.empty(): " << current->todo_list.empty() << std::endl;
 	while (!current->todo_list.empty())
 	{
 		// front()やpop_front()はC++に組み込まれた関数
@@ -82,7 +82,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 		profile_vector_->insert(todo);
 
 		if (todo->simulation_state == NOT_SIMULATED) {
-			std::cout << "=> 5.2.3:\t calling process_one_todo()" << std::endl;
+			// std::cout << "=> 5.2.3:\t calling process_one_todo()" << std::endl;
 			process_one_todo(todo); // ここからSimulator.cppの関数に飛ぶ
 			// --fdump_in_progressの時には実行される
 			if (opts_->dump_in_progress){
@@ -91,7 +91,7 @@ void SequentialSimulator::dfs(phase_result_sptr_t current)
 		}
 
 		// 核心：ここら辺でフェーズを進めるシミュレーションを行なっている。 // 再帰
-		std::cout << "=> 5.2.4:\t looooping" << std::endl;
+		// std::cout << "=> 5.2.4:\t looooping" << std::endl;
 		dfs(todo);
 		if (!opts_->nd_mode || (opts_->stop_at_failure && assertion_failed))
 		{

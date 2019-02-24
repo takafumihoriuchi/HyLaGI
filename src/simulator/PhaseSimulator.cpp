@@ -62,7 +62,7 @@ PhaseSimulator::~PhaseSimulator() {}
 // この関数がフェーズ毎の処理を司っている
 phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 {
-	std::cout << "=> 5.2.3.1.0:\t in process_todo()" << std::endl;
+	// std::cout << "=> 5.2.3.1.0:\t in process_todo()" << std::endl;
 	timer::Timer phase_timer;
 	module_set_container->reset();
 	todo->inconsistent_module_sets.clear();
@@ -117,14 +117,14 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 	
 	// todoが空の場合
 	if (phase_list.empty()) {
-		std::cout << "=> 5.2.3.1.1:\t phase_list does not contain any element: " << phase_list.size() << std::endl;
+		// std::cout << "=> 5.2.3.1.1:\t phase_list does not contain any element: " << phase_list.size() << std::endl;
 		todo->simulation_state = INCONSISTENCY;
 		todo->set_parameter_constraint(get_current_parameter_constraint());
 		todo->parent->children.push_back(todo);
 	}
 	// todoに要素が入っている場合
 	else {
-		std::cout << "=> 5.2.3.1.1:\t phase_list contains " << phase_list.size() << " elements" << std::endl;
+		// std::cout << "=> 5.2.3.1.1:\t phase_list contains " << phase_list.size() << " elements" << std::endl;
 		for (auto phase : phase_list) {
 			make_next_todo(phase);
 			// warn against unreferenced variables
@@ -203,7 +203,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 
 		// Zeno現象の回避として活用できる（こともある）
 		// 試しにfloor_splitted_into_blocks.hydlaの変数xが単調増加であることに限定して実装してみる
-		std::cout << "=> 5.2.3.1.1: HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
+		// std::cout << "=> 5.2.3.1.1: HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
 		for (auto ask : relation_graph_->get_all_asks()) {
 			// 単調性判定の対象となるaskを選別する
 			std::string monotonic_var = "x";
@@ -1104,7 +1104,7 @@ find_min_time_result_t PhaseSimulator::find_min_time(
 	HistoryData>& atomic_guard_min_time_interval_map
 ) {
 	// find_min_time() is only called in IP
-	std::cout << "=> 5.2.1.2.3:\t entered find_min_time()" << std::endl;
+	// std::cout << "=> 5.2.1.2.3:\t entered find_min_time()" << std::endl;
 
 	// オプションで指定した場合のみ
 	if (opts_->step_by_step) {
@@ -2177,7 +2177,7 @@ void PhaseSimulator::reset_parameter_constraint(ConstraintStore par_cons)
 // まずは、apply_diffの"diff"がなんの略であるかを特定する
 void PhaseSimulator::apply_diff(const PhaseResult &phase)
 {
-	std::cout << "=> 5.2.1.1:\t inside apply_diff()" << std::endl;
+	// std::cout << "=> 5.2.1.1:\t inside apply_diff()" << std::endl;
 	// このfor構文は、型推論でイテレータを自動で生成し、各要素のコピーをdiffに取得する
 	for (auto diff : phase.module_diff)
 	{

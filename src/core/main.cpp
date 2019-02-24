@@ -58,25 +58,25 @@ extern string input_file_name;
 // エントリポイント
 int main(int argc, char* argv[])
 {
-	cout << "=> 1:\t beginning of HyLaGI program" << endl;
+	// cout << "=> 1:\t beginning of HyLaGI program" << endl;
 	int result = hydla_main(argc, argv);
-	cout << "=> last:\t terminating HyLaGI" << endl;
+	// cout << "=> last:\t terminating HyLaGI" << endl;
 	return result;
 }
 
 int hydla_main(int argc, char* argv[])
 {
-	cout << "=> 2:\t entered hydla_main()" << endl;
-	cout << "=> 3:\t calling function to parse command line options" << endl;
+	// cout << "=> 2:\t entered hydla_main()" << endl;
+	// cout << "=> 3:\t calling function to parse command line options" << endl;
 	cmdline_options.parse(argc, argv);
-	cout << "=> 3.2:\t finished parsing command line option" << endl;
+	// cout << "=> 3.2:\t finished parsing command line option" << endl;
 	
 	signal(SIGINT, signal_handler::interrupt_handler);
 	signal(SIGTERM, signal_handler::term_handler);
 
 	// コマンドラインオプションが help か version だった場合はここで終了する。
 	if (dump_in_advance(cmdline_options)) {
-		cout << "=> last-1:\t terminating before simulation (help/ver)" << endl;
+		// cout << "=> last-1:\t terminating before simulation (help/ver)" << endl;
 		return 0;
 	}
 	
@@ -472,7 +472,7 @@ int hydla_main(int argc, char* argv[])
 	// コマンドラインで「何かをdumpして終了する」ようなオプションが指定されていたら、
 	// シミュレーションの実行前に、ここでプログラムをterminateする。
 	if (dump(pt, cmdline_options) || dump(pt, options_in_source)) {
-		cout << "=> last-1:\t terminating before simulation (dump)" << endl;
+		// cout << "=> last-1:\t terminating before simulation (dump)" << endl;
 		return 0;
 	}
 
@@ -482,14 +482,14 @@ int hydla_main(int argc, char* argv[])
 	// シミュレーションの時間を計測
 	Timer simulation_timer;
 	// HydLaモデルのシミュレーションを実行する // 'pt' は "parse-tree" の略
-	cout << "=> 4.0:\t calling simulate()" << endl;
+	// cout << "=> 4.0:\t calling simulate()" << endl;
 	int simulation_result = simulate(pt);
 
 	HYDLA_LOGGER_STANDARD("\n\tSimulation Time : ", simulation_timer.get_time_string());
 	HYDLA_LOGGER_STANDARD("\tFinish Time : ", main_timer.get_time_string());
 	HYDLA_LOGGER_STANDARD("");
 
-	cout << "=> return " << simulation_result << " from hydla_main" << endl;
+	// cout << "=> return " << simulation_result << " from hydla_main" << endl;
 	return simulation_result;
 }
 
