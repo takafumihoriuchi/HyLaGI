@@ -352,7 +352,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 					// std::cout << "guard condition : " << sum << std::endl;
 					// std::cout << "current value   : " << current_val << std::endl;
 					std::cout << "\tmonotonic var\t: x (= " << current_val << ")" << std::endl;
-					std::cout << "\tremoving following guarded constraints :" << std::endl;
+					std::cout << "\tremoved following guarded constraints :" << std::endl;
 					first_output = false;
 				}
 				// 取り敢えずは、このcurrent_value_strを自分で数式処理して値に変換する
