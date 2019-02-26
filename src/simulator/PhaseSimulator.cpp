@@ -278,12 +278,11 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 			for (auto var : relation_graph_->get_adjacent_variables(ask))
 				if (var == monotonic_var)
 					constraint_includes_monotonic_var = true;
-			if (!constraint_includes_monotonic_var)
-				continue;
+			if (!constraint_includes_monotonic_var) continue;
 			// askからguardを取り出し、atomic_guardに分割する
 			for (auto atomic_guard : relation_graph_->get_atomic_guards(ask->get_guard())) {
 				std::string s = get_infix_string(atomic_guard->constraint);
-				std::cout << ">>>> atomic_guard is: " << s << std::endl;
+				// std::cout << ">>>> atomic_guard is: " << s << std::endl;
 				// このモデルでは三種類
 				std::string delimiter_xeq = "x-=";
 				// std::string delimiter_xgeq = "<=x-";
@@ -303,7 +302,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 					if (xlt) s.erase(0, delimiter_xlt.length());
 				}
 				//
-				std::cout << ">>>> shaved atomic guard is: " << s << std::endl;
+				// std::cout << ">>>> shaved atomic guard is: " << s << std::endl;
 				//
 				// xle では「+」の右と左を足す
 				// xeq は足し算が入らないからそのまま使える
@@ -319,7 +318,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 					s.erase(0, pos + delimiter_pls.length());
 					sum += std::stoi(s);
 				}
-				std::cout << ">>>> shaved number is: " << std::to_string(sum) << std::endl;
+				// std::cout << ">>>> shaved number is: " << std::to_string(sum) << std::endl;
 				//
 				// 変数の現在の値を取得する
 				std::string current_val_str;
