@@ -356,7 +356,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				}
 				// 取り敢えずは、このcurrent_value_strを自分で数式処理して値に変換する
 				if (double(sum) < current_val) {
-					std::cout << "\tremoving\t: " << get_infix_string(ask) << std::endl;
+					std::cout << "\trm\t: " << get_infix_string(ask) << std::endl;
 					relation_graph_->set_expanded_atomic(ask, false);
 				}
 			}
