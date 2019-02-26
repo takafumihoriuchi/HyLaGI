@@ -271,6 +271,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// 研究室内提出に際しての実装: bouncing_down_stairs_corridorの変数xが単調であるとわかったことが前提
 		// 現在のテスト実装は効率の良くない処理を繰り返してるので、最終的にはそれを修正したコードを作成する。
 		// std::cout << "=> 5.2.3.1.1: HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
+		bool first_output = true;
 		for (auto ask : relation_graph_->get_all_asks()) {
 			// 単調性判定の対象となるaskを選別する
 			std::string monotonic_var = "x";
@@ -347,8 +348,12 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				parser_t parser;
 				parser.compile(current_val_str, expression);
 				double current_val = expression.value();
-				std::cout << "guard condition : " << sum << std::endl;
-				std::cout << "current value   : " << current_val << std::endl;
+				if (first_output == true) {
+					// std::cout << "guard condition : " << sum << std::endl;
+					// std::cout << "current value   : " << current_val << std::endl;
+					std::cout << "\tmonotonic var : x (= " << current_val << ")" << std::endl;
+					first_output = false;
+				}
 				// 取り敢えずは、このcurrent_value_strを自分で数式処理して値に変換する
 				if (double(sum) < current_val) {
 					std::cout << "removing following ask: " << get_infix_string(ask) << std::endl;
