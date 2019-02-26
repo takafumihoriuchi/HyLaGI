@@ -267,6 +267,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// 	}
 		// }
 		
+		// 卒論の床モデルでもこちらを使えば良い。グラフは実際にこれらの数秘を使用している
 		// 研究室内提出に際しての実装: bouncing_down_stairs_corridorの変数xが単調であるとわかったことが前提
 		// 現在のテスト実装は効率の良くない処理を繰り返してるので、最終的にはそれを修正したコードを作成する。
 		// std::cout << "=> 5.2.3.1.1: HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
