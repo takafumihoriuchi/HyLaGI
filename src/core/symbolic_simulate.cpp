@@ -210,23 +210,23 @@ void process_opts(Opts& opts, ProgramOptions& po, bool use_default)
 	IF_SPECIFIED("fail_on_stop")opts.stop_at_failure = po.count("fail_on_stop") > 0 && po.get<char>("fail_on_stop") == 'y';
 	IF_SPECIFIED("approximation_step")opts.approximation_step = po.get<int>("approximation_step");
 	IF_SPECIFIED("extra_dummy")opts.extra_dummy_num = po.get<int>("extra_dummy_num");
-
 	IF_SPECIFIED("vars_to_approximate")
 	{
-		add_vars_from_string(po.get<string>("vars_to_approximate"), opts.vars_to_approximate, "");
+	add_vars_from_string(po.get<string>("vars_to_approximate"), opts.vars_to_approximate, "");
 	}
 	IF_SPECIFIED("guards_to_interval_newton")
 	{
-		std::stringstream sstr(po.get<string>("guards_to_interval_newton"));
-		string buffer;
-		while(std::getline(sstr, buffer, ','))
-		{
-			buffer = utility::replace(buffer, " ", "");
-			opts.guards_to_interval_newton.insert(buffer);
-		}
+	std::stringstream sstr(po.get<string>("guards_to_interval_newton"));
+	string buffer;
+	while(std::getline(sstr, buffer, ','))
+	{
+	  buffer = utility::replace(buffer, " ", "");
+	  opts.guards_to_interval_newton.insert(buffer);
+	}
 	}
 	IF_SPECIFIED("step_by_step")opts.step_by_step = po.count("step_by_step") > 0 && po.get<char>("step_by_step") == 'y';
 	IF_SPECIFIED("simplify")opts.simplify = po.get<int>("simplify");
+	IF_SPECIFIED("dsolve")opts.dsolve = po.get<int>("dsolve");
 	IF_SPECIFIED("solve_over_reals")opts.solve_over_reals = po.count("solve_over_reals") > 0 && po.get<char>("solve_over_reals") == 'y';
 	IF_SPECIFIED("html")opts.html = po.count("html") > 0 && po.get<char>("html") == 'y';
 }
@@ -248,26 +248,22 @@ int simulate(boost::shared_ptr<hydla::parse_tree::ParseTree> parse_tree)
 		simulator_ = new SequentialSimulator(opts);
 	}
 
-	// std::cout << "=> 4.1.1:\t setting up backend solver : " << backend_ << std::endl;
-	simulator_->set_backend(backend_);
-	// std::cout << "=> 4.1.2:\t setting up phase simulator" << std::endl;
-	// ここでPhaseSimulatorのコンストラクタが走ることに注目
-	simulator_->set_phase_simulator(new PhaseSimulator(simulator_, opts));
-	// std::cout << "=> 4.1.3:\t initializing simulator" << std::endl;
-	simulator_->initialize(parse_tree);
-	// std::cout << "=> 4.2:\t starting simulation" << std::endl;
+
+	backend_.reset(new Backend(new MathematicaLink(opts.wstp, opts.ignore_warnings, opts.simplify_time, opts.simplify, opts.dsolve, opts.solve_over_reals)));
+	PhaseResult::backend = backend_.get();
 
 	// ここがHydLaシミュレーションの要！！
 	simulator_->simulate();
 
-	// std::cout << "=> 4.3:\t simulation terminated" << std::endl;
-	// ha = hybrid automaton
+	simulator_->set_backend(backend_);
+	simulator_->set_phase_simulator(new PhaseSimulator(simulator_, opts));
+	simulator_->initialize(parse_tree);
+	simulator_->simulate();
 	if(!opts.ha_convert_mode)
 	{
-		// std::cout << "=> 4.4:\t option ha_convert_mode is set to false" << std::endl;
-		output_result(*simulator_, opts);
+	simulator_->phase_simulator_->print_completely_unboundness_condition();
+	output_result(*simulator_, opts);
 	}
-	// std::cout << "=> 4.5:\t outputted result" << std::endl;
 	int simulation_status = simulator_->get_exit_status();
 	delete simulator_;
 	return simulation_status;

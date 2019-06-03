@@ -3,6 +3,8 @@
 #include "Simulator.h"
 #include "Backend.h"
 #include "HydLaError.h"
+#include "VariableFinder.h"
+#include "Variable.h"
 
 #include <sstream>
 
@@ -93,25 +95,25 @@ asks_t PhaseResult::get_diff_positive_asks()const
 
 void PhaseResult::add_diff_positive_asks(const asks_t &asks)
 {
-  full_information = boost::none;
+  full_information = nullopt;
   diff_positive_asks.insert(asks.begin(), asks.end());
 }
 
 void PhaseResult::add_diff_negative_asks(const asks_t &asks)
 {
-  full_information = boost::none;
+  full_information = nullopt;
   diff_negative_asks.insert(asks.begin(), asks.end());
 }
 
 void PhaseResult::add_diff_positive_ask(const ask_t &ask)
 {
-  full_information = boost::none;
+  full_information = nullopt;
   diff_positive_asks.insert(ask);
 }
 
 void PhaseResult::add_diff_negative_ask(const ask_t &ask)
 {
-  full_information = boost::none;
+  full_information = nullopt;
   diff_negative_asks.insert(ask);
 }
 
@@ -130,20 +132,20 @@ asks_t PhaseResult::get_all_negative_asks()const
 void PhaseResult::set_parameter_constraint(const ConstraintStore &cons)
 {
   parameter_constraint = cons;
-  parameter_maps = boost::none;
+  parameter_maps = nullopt;
 }
 
 void PhaseResult::add_parameter_constraint(const constraint_t &cons)
 {
   parameter_constraint.add_constraint(cons);
-  parameter_maps = boost::none;
+  parameter_maps = nullopt;
 }
 
 
 void PhaseResult::add_parameter_constraint(const ConstraintStore &cons)
 {
   parameter_constraint.add_constraint_store(cons);
-  parameter_maps = boost::none;
+  parameter_maps = nullopt;
 }
 
 
@@ -177,11 +179,40 @@ void PhaseResult::set_full_information(FullInformation &info)
   full_information = info;
 }
 
+std::map<variable_set_t,module_set_t> PhaseResult::calc_map_v2cons()const{
+  std::map<variable_set_t,module_set_t> res;
+  auto unsatmodset = (this->inconsistent_module_sets).begin();
+  for(auto unsatconsset : this->inconsistent_constraints){
+    variable_set_t vars;
+    for(auto unsatcons : unsatconsset){
+      VariableFinder finder;
+      finder.visit_node(unsatcons);
+      
+      // HACK: use std::set::merge
+      for(auto v : finder.get_all_variable_set()){
+        vars.insert(v);
+      }
+    }
+    if(res.count(vars) == 0 or res[vars].size() > unsatmodset->size()){
+      res[vars] = *unsatmodset;
+    }
+    ++unsatmodset;
+  }
+  return res;
+}
+
 string PhaseResult::get_string()const
 {
   std::stringstream sstr;
   sstr << *this;
   return  sstr.str();
+}
+
+string PhaseResult::get_vm_string()const
+{
+	std::stringstream sstr;
+	sstr << (*this).variable_map;
+	return sstr.str();
 }
 
 
