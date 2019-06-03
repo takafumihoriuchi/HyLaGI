@@ -266,7 +266,8 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// 	}
 		// }
 		
-		// 一様な単調性のためのガード付き制約の動的削減手法：Boucing Down Stairs and Corridor Model
+		/*
+		// [2019.6.3] 一様な単調性のためのガード付き制約の動的削減手法：Boucing Down Stairs and Corridor Model
 		// 卒論の床モデルでもこちらを使えば良い。グラフは実際にこれらの数値を使用している
 		// 研究室内提出に際しての実装: bouncing_down_stairs_corridorの変数xが単調であるとわかったことが前提
 		// 現在のテスト実装は効率の良くない処理を繰り返してるので、最終的にはそれを修正したコードを作成する。
@@ -363,6 +364,103 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 				}
 			}
 		}
+		*/
+
+		// [2019.6.3] 反転する単調性のためのガード付き制約の動的削減手法：Double Stairs Model
+		// 単調増加用と単調減少用を切り替えられるようにする（コメントアウトなど）
+		bool first_output = true;
+		for (auto ask : relation_graph_->get_all_asks()) {
+			// 単調性判定の対象となるaskを選別する
+			std::string monotonic_var = "x";
+			bool constraint_includes_monotonic_var = false;
+			for (auto var : relation_graph_->get_adjacent_variables(ask))
+				if (var == monotonic_var)
+					constraint_includes_monotonic_var = true;
+			if (!constraint_includes_monotonic_var) continue;
+			// askからguardを取り出し、atomic_guardに分割する
+			for (auto atomic_guard : relation_graph_->get_atomic_guards(ask->get_guard())) {
+				std::string s = get_infix_string(atomic_guard->constraint);
+				// std::cout << ">>>> atomic_guard is: " << s << std::endl;
+				// このモデルでは三種類
+				std::string delimiter_xeq = "x-=";
+				// std::string delimiter_xgeq = "<=x-";
+				std::string delimiter_xlt = "x-<";
+				// int xeq=1, xgeq=1, xlt=1;
+				int xeq=1, xlt=1;
+				// 見つからなかったら0にする。見つかったら1のまま
+				if (s.find(delimiter_xeq) == std::string::npos) xeq = 0;
+				// if (s.find(delimiter_xgeq) == std::string::npos) xgeq = 0;
+				if (s.find(delimiter_xlt) == std::string::npos) xlt = 0;
+				// 対象とする変数が含まれていなかったら退場
+				// if (!(xeq & xgeq & xlt)) continue;
+				if (!(xeq | xlt)) continue;
+				else {
+					if (xeq) s.erase(0, delimiter_xeq.length());
+					// if (xgeq) s.erase(0, delimiter_xgeq.length());
+					if (xlt) s.erase(0, delimiter_xlt.length());
+				}
+				//
+				// std::cout << ">>>> shaved atomic guard is: " << s << std::endl;
+				//
+				// xle では「+」の右と左を足す
+				// xeq は足し算が入らないからそのまま使える
+				int sum = 0;
+				if (xeq) {
+					sum += std::stoi(s);
+				}
+				if (xlt) {
+					size_t pos = 0;
+					std::string delimiter_pls = "+";
+					pos = s.find(delimiter_pls);
+					sum += std::stoi(s.substr(0, pos));
+					s.erase(0, pos + delimiter_pls.length());
+					sum += std::stoi(s);
+				}
+				// std::cout << ">>>> shaved number is: " << std::to_string(sum) << std::endl;
+				//
+				// 変数の現在の値を取得する
+				std::string current_val_str;
+				variable_map_t vm = todo->variable_map;
+				for (auto it = vm.begin(); it!=vm.end(); ++it) {
+					// std::cout << it->first << ": " << it->second << std::endl;
+					if (it->first.get_name() == "x") {
+						// current_val = it->second.get_unique_value();
+						// std::cout << it->first << ": " << ValueNumerizer().numerize(it->second.get_unique_value()) << std::endl;
+						// std::cout << it->first << ": " << it->second.get_unique_value() << std::endl;
+						// std::cout << it->first << ": " << it->second.get_string() << std::endl;
+						// std::cout << "type: " << typeid(it->second.get_unique_value()).name() << std::endl;
+						// 後は、it->secondの数式を計算してdouble型にして保存したい
+						// auto current_value = it->second.get_unique_value();
+						current_val_str = it->second.get_string();
+						// std::cout << "==> " << ValueNumerizer().numerize(current_value)-> << std::endl;
+						break; // 本当は、.get/name()では微分値も元の変数名で出てきてしまうので、対応能力を上げなくてはいけない
+					}
+				}
+				typedef exprtk::symbol_table<double> symbol_table_t;
+				typedef exprtk::expression<double> expression_t;
+				typedef exprtk::parser<double> parser_t;
+				symbol_table_t symbol_table;
+				expression_t expression;
+				expression.register_symbol_table(symbol_table);
+				parser_t parser;
+				parser.compile(current_val_str, expression);
+				double current_val = expression.value();
+				if (first_output == true) {
+					// std::cout << "guard condition : " << sum << std::endl;
+					// std::cout << "current value   : " << current_val << std::endl;
+					std::cout << "\tmonotonic var\t: x (= " << current_val << ")" << std::endl;
+					std::cout << "\tremoved following guarded constraints :" << std::endl;
+					first_output = false;
+				}
+				// 取り敢えずは、このcurrent_value_strを自分で数式処理して値に変換する
+				if (double(sum) < current_val) {
+					// std::cout << "\trm\t: " << get_infix_string(ask) << std::endl;
+					std::cout << "\t" << get_infix_string(ask) << std::endl;
+					relation_graph_->set_expanded_atomic(ask, false);
+				}
+			}
+		}
+		// up until here [2019.6.3]
 
 
 	}
