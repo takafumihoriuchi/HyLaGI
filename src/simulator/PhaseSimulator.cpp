@@ -367,6 +367,7 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		*/
 
 		// [2019.6.3] 反転する単調性のためのガード付き制約の動的削減手法：Double Stairs Model
+		// ASSERT(x' >= 0) として実行し、assertion failed! で、変数の初期値を変えてから ASSERT(x' <= 0) として再実行
 		// 単調増加用と単調減少用を切り替えられるようにする（コメントアウトなど）
 		bool first_output = true;
 		for (auto ask : relation_graph_->get_all_asks()) {
