@@ -198,7 +198,6 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// ⑤ 単調性により成立しなくなったガードを削除する（* 削除するのか、参照しないように印を付けるのか）
 		// => 指定したaskとconstraint_nodeを結びつける？
 		// => 対象のconstraint_nodeを削除する
-
 		*/
 
 		// // Zeno現象の回避として活用できる（こともある）
@@ -267,7 +266,8 @@ phase_list_t PhaseSimulator::process_todo(phase_result_sptr_t &todo)
 		// 	}
 		// }
 		
-		// 卒論の床モデルでもこちらを使えば良い。グラフは実際にこれらの数秘を使用している
+		// 一様な単調性のためのガード付き制約の動的削減手法：Boucing Down Stairs and Corridor Model
+		// 卒論の床モデルでもこちらを使えば良い。グラフは実際にこれらの数値を使用している
 		// 研究室内提出に際しての実装: bouncing_down_stairs_corridorの変数xが単調であるとわかったことが前提
 		// 現在のテスト実装は効率の良くない処理を繰り返してるので、最終的にはそれを修正したコードを作成する。
 		// std::cout << "=> 5.2.3.1.1: HOR: MONOTONIC-TEST / TEST IMPLEMENTATION" << std::endl;
